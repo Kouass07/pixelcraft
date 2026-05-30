@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ConvertHub.io – Free Online Media Tools | Image, PDF & Video Converter</title>
+<meta name="description" content="ConvertHub.io — The ultimate free online media toolkit. Convert, compress, resize images, merge/split/compress PDFs, extract video frames. No upload, no registration, 100% free and private.">
+<meta name="keywords" content="convert image online, compress pdf free, pdf to jpg, jpg to pdf, merge pdf, image converter, resize image, video frame extractor, free media tools, convertir image, compresser pdf, convertir pdf, herramientas multimedia gratis, comprimir pdf, convertir imagen">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pixelcraft-sage.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pixelcraft-sage.vercel.app/">
+<meta property="og:title" content="ConvertHub.io – Free Online Media Tools">
+<meta property="og:description" content="The ultimate free online media toolkit. Images, PDFs, Videos — all in one place. 100% free, instant, private.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ConvertHub.io – Free Online Media Tools">
+<meta name="twitter:description" content="Convert, compress, resize images. Edit PDFs. Extract video frames. All free, instant, private.">
+<link rel="alternate" hreflang="en" href="https://pixelcraft-sage.vercel.app/">
+<link rel="alternate" hreflang="fr" href="https://pixelcraft-sage.vercel.app/">
+<link rel="alternate" hreflang="es" href="https://pixelcraft-sage.vercel.app/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ConvertHub.io","url":"https://pixelcraft-sage.vercel.app/","description":"Free online media tools for images, PDFs and videos","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Image Compression","Image Conversion","PDF Compression","PDF Merge","PDF Split","PDF to Image","Image to PDF","Video Frame Extraction"]}</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5331834787008859" crossorigin="anonymous"></script>
+<!-- PDF.js for real PDF rendering -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<!-- pdf-lib for PDF manipulation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050508;--s1:#0c0c14;--s2:#111119;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.13);
+  --img:#00d4ff;--pdf:#ff6b35;--vid:#7b2fff;--grn:#00ffb3;--yel:#ffbe0b;
+  --text:#eef0ff;--muted:rgba(238,240,255,0.45);
+  --r:20px;--r2:12px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;cursor:none}
+.cur{position:fixed;width:10px;height:10px;background:var(--img);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .3s,height .3s}
+.cur-r{position:fixed;width:32px;height:32px;border:1.5px solid rgba(0,212,255,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.14}
+.o1{width:600px;height:600px;background:radial-gradient(circle,#00d4ff,transparent);top:-200px;left:-150px;animation:ob 16s ease-in-out infinite alternate}
+.o2{width:500px;height:500px;background:radial-gradient(circle,#ff6b35,transparent);top:30%;right:-100px;animation:ob 20s ease-in-out infinite alternate-reverse}
+.o3{width:450px;height:450px;background:radial-gradient(circle,#7b2fff,transparent);bottom:-100px;left:25%;animation:ob 13s ease-in-out infinite alternate}
+.o4{width:350px;height:350px;background:radial-gradient(circle,#00ffb3,transparent);bottom:20%;right:15%;animation:ob 18s ease-in-out infinite alternate}
+@keyframes ob{from{transform:translate(0,0) scale(1)}to{transform:translate(35px,25px) scale(1.1)}}
+.grid-bg{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:55px 55px;pointer-events:none}
+nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(5,5,8,.88);border-bottom:1px solid var(--border)}
+.nav-in{max-width:1100px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:3px;flex-shrink:0}
+.logo .c1{color:var(--img)}.logo .c2{color:var(--text)}.logo .c3{color:var(--pdf)}
+.lang-b{display:flex;gap:3px;background:var(--s2);border:1px solid var(--border);border-radius:50px;padding:3px}
+.lb{padding:5px 12px;border-radius:50px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;transition:all .2s;background:transparent;color:var(--muted)}
+.lb.on{background:linear-gradient(135deg,var(--img),var(--vid));color:#fff;box-shadow:0 4px 14px rgba(0,212,255,.25)}
+.nav-tag{background:rgba(0,255,179,.08);border:1px solid rgba(0,255,179,.2);border-radius:50px;padding:5px 14px;font-size:.72rem;color:var(--grn);font-weight:600;white-space:nowrap}
+.hero{position:relative;z-index:1;text-align:center;padding:80px 24px 50px;max-width:960px;margin:0 auto}
+.htag{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);border-radius:50px;padding:6px 18px;font-size:.78rem;color:var(--img);font-weight:500;margin-bottom:28px;animation:fu .7s ease both}
+.htag::before{content:'';width:5px;height:5px;background:var(--img);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.6)}}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,9vw,6.5rem);line-height:.95;letter-spacing:3px;margin-bottom:20px;animation:fu .7s .1s ease both}
+.g1{color:var(--img)}.g2{color:var(--pdf)}.g3{color:var(--vid)}
+.hsub{font-size:1rem;color:var(--muted);max-width:580px;margin:0 auto 36px;line-height:1.75;animation:fu .7s .2s ease both}
+@keyframes fu{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.cat-tabs{display:flex;justify-content:center;gap:10px;margin-bottom:40px;animation:fu .7s .3s ease both;flex-wrap:wrap;padding:0 24px}
+.cat-tab{display:flex;align-items:center;gap:8px;padding:12px 28px;border-radius:50px;border:1.5px solid var(--border);background:var(--s2);cursor:pointer;transition:all .3s;font-weight:700;font-size:.9rem}
+.cat-tab:hover{transform:translateY(-2px)}
+.cat-tab.img-t.on{background:rgba(0,212,255,.1);border-color:var(--img);color:var(--img);box-shadow:0 8px 24px rgba(0,212,255,.2)}
+.cat-tab.pdf-t.on{background:rgba(255,107,53,.1);border-color:var(--pdf);color:var(--pdf);box-shadow:0 8px 24px rgba(255,107,53,.2)}
+.cat-tab.vid-t.on{background:rgba(123,47,255,.1);border-color:var(--vid);color:var(--vid);box-shadow:0 8px 24px rgba(123,47,255,.2)}
+.stats{display:flex;justify-content:center;gap:0;animation:fu .7s .35s ease both;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;max-width:560px;margin:0 auto 50px}
+.st{flex:1;padding:18px 12px;text-align:center;border-right:1px solid var(--border);background:rgba(255,255,255,.015)}
+.st:last-child{border-right:none}
+.sn{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px}
+.sn.c-img{color:var(--img)}.sn.c-pdf{color:var(--pdf)}.sn.c-vid{color:var(--vid)}.sn.c-grn{color:var(--grn)}
+.sl{font-size:.68rem;color:var(--muted);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.8px}
+.drop-wrap{position:relative;z-index:1;max-width:680px;margin:0 auto 20px;padding:0 24px}
+.dz{border:2px dashed rgba(0,212,255,.2);border-radius:var(--r);padding:46px 28px;text-align:center;cursor:pointer;transition:all .3s;position:relative}
+.dz.pdf-mode{border-color:rgba(255,107,53,.2)}
+.dz.vid-mode{border-color:rgba(123,47,255,.2)}
+.dz.img-mode:hover{border-color:var(--img);box-shadow:0 0 50px rgba(0,212,255,.12);transform:scale(1.01)}
+.dz.pdf-mode:hover{border-color:var(--pdf);box-shadow:0 0 50px rgba(255,107,53,.12);transform:scale(1.01)}
+.dz.vid-mode:hover{border-color:var(--vid);box-shadow:0 0 50px rgba(123,47,255,.12);transform:scale(1.01)}
+.dz input{display:none}
+.dz-ico{width:68px;height:68px;margin:0 auto 16px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;animation:fl 3.5s ease-in-out infinite}
+.img-ico{background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(0,212,255,.4));box-shadow:0 10px 30px rgba(0,212,255,.25)}
+.pdf-ico{background:linear-gradient(135deg,rgba(255,107,53,.2),rgba(255,107,53,.4));box-shadow:0 10px 30px rgba(255,107,53,.25)}
+.vid-ico{background:linear-gradient(135deg,rgba(123,47,255,.2),rgba(123,47,255,.4));box-shadow:0 10px 30px rgba(123,47,255,.25)}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.dz-t{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:1px;margin-bottom:6px}
+.dz-s{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+.dz-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 28px;border-radius:50px;font-weight:700;font-size:.88rem;border:none;cursor:pointer;transition:all .3s}
+.img-btn{background:linear-gradient(135deg,var(--img),#0099cc);color:#050508;box-shadow:0 6px 24px rgba(0,212,255,.25)}
+.pdf-btn{background:linear-gradient(135deg,var(--pdf),#cc4422);color:#fff;box-shadow:0 6px 24px rgba(255,107,53,.25)}
+.vid-btn{background:linear-gradient(135deg,var(--vid),#5511cc);color:#fff;box-shadow:0 6px 24px rgba(123,47,255,.25)}
+.dz-btn:hover{transform:translateY(-2px)}
+.fmts{margin-top:12px;display:flex;flex-wrap:wrap;justify-content:center;gap:5px}
+.fmt{background:var(--s2);border:1px solid var(--border);border-radius:5px;padding:2px 8px;font-size:.68rem;color:var(--muted);font-weight:600}
+.sec{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:30px 24px}
+.sh{margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.sh-line{width:4px;height:32px;border-radius:2px}
+.img-l{background:linear-gradient(to bottom,var(--img),transparent)}
+.pdf-l{background:linear-gradient(to bottom,var(--pdf),transparent)}
+.vid-l{background:linear-gradient(to bottom,var(--vid),transparent)}
+.sh-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:2px}
+.sh-sub{color:var(--muted);font-size:.82rem;margin-top:3px}
+.tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.tc{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:20px 16px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.tc:hover{transform:translateY(-4px);border-color:var(--border2);box-shadow:0 14px 35px rgba(0,0,0,.45)}
+.tc.img-tc.on{border-color:var(--img);box-shadow:0 0 24px rgba(0,212,255,.15)}
+.tc.pdf-tc.on{border-color:var(--pdf);box-shadow:0 0 24px rgba(255,107,53,.15)}
+.tc.vid-tc.on{border-color:var(--vid);box-shadow:0 0 24px rgba(123,47,255,.15)}
+.ti{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:10px}
+.ti-img{background:rgba(0,212,255,.15)}.ti-pdf{background:rgba(255,107,53,.15)}.ti-vid{background:rgba(123,47,255,.15)}
+.tn{font-weight:700;font-size:.9rem;margin-bottom:4px}
+.td{font-size:.73rem;color:var(--muted);line-height:1.5}
+.tbadge{display:inline-block;border-radius:4px;padding:1px 7px;font-size:.62rem;font-weight:700;letter-spacing:.5px;margin-bottom:7px}
+.pop{background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.25);color:var(--img)}
+.nw{background:rgba(0,255,179,.12);border:1px solid rgba(0,255,179,.25);color:var(--grn)}
+.hot{background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.25);color:var(--pdf)}
+.tool-section{display:none}.tool-section.active{display:block}
+#ws{display:none;position:relative;z-index:1}
+.ws-wrap{max-width:800px;margin:0 auto 40px;padding:0 24px}
+.ws-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:26px;animation:fu .4s ease both}
+.ws-hdr{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.ws-ico{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.ws-ico.img-ico2{background:linear-gradient(135deg,var(--img),#0099cc);box-shadow:0 6px 20px rgba(0,212,255,.3)}
+.ws-ico.pdf-ico2{background:linear-gradient(135deg,var(--pdf),#cc4422);box-shadow:0 6px 20px rgba(255,107,53,.3)}
+.ws-ico.vid-ico2{background:linear-gradient(135deg,var(--vid),#5511cc);box-shadow:0 6px 20px rgba(123,47,255,.3)}
+.ws-t{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:1px}
+.ws-s{color:var(--muted);font-size:.78rem;margin-top:2px}
+.prev{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;min-height:160px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding:12px}
+.prev img,.prev video{max-width:100%;max-height:280px;object-fit:contain;display:block}
+.prev-e{color:var(--muted);font-size:.82rem;text-align:center;padding:36px}
+.pdf-pages{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-height:300px;overflow-y:auto;width:100%}
+.pdf-page-thumb{border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.pdf-page-thumb canvas{display:block;max-width:120px}
+.ctrls{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:18px}
+.cg label{display:block;font-size:.72rem;color:var(--muted);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.rv{float:right;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:.9rem}
+.rv.c-img{color:var(--img)}.rv.c-pdf{color:var(--pdf)}.rv.c-vid{color:var(--vid)}
+.cg input[type=range]{width:100%;cursor:pointer;height:4px}
+.cg input[type=range].img-r{accent-color:var(--img)}
+.cg input[type=range].pdf-r{accent-color:var(--pdf)}
+.cg input[type=range].vid-r{accent-color:var(--vid)}
+.cg select,.cg input[type=number],.cg input[type=text]{width:100%;background:var(--s1);border:1px solid var(--border);color:var(--text);border-radius:var(--r2);padding:9px 12px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s}
+.cg select:focus,.cg input:focus{border-color:var(--img)}
+.cg.full{grid-column:1/-1}
+.act-row{display:flex;gap:9px;flex-wrap:wrap}
+.bp{flex:1;min-width:130px;padding:12px 22px;border:none;cursor:pointer;border-radius:50px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;transition:all .3s}
+.bp.img-p{background:linear-gradient(135deg,var(--img),#0099cc);color:#050508;box-shadow:0 6px 24px rgba(0,212,255,.25)}
+.bp.pdf-p{background:linear-gradient(135deg,var(--pdf),#cc4422);color:#fff;box-shadow:0 6px 24px rgba(255,107,53,.25)}
+.bp.vid-p{background:linear-gradient(135deg,var(--vid),#5511cc);color:#fff;box-shadow:0 6px 24px rgba(123,47,255,.25)}
+.bp:hover{transform:translateY(-2px)}
+.bs{padding:12px 18px;border:1px solid var(--border2);cursor:pointer;background:transparent;color:var(--text);border-radius:50px;font-family:'Outfit',sans-serif;font-weight:500;font-size:.85rem;transition:all .3s}
+.bs:hover{border-color:var(--img);color:var(--img)}
+.pw{height:3px;background:var(--s1);border-radius:50px;overflow:hidden;margin:12px 0;display:none}
+.pb{height:100%;border-radius:50px;width:0;transition:width .4s}
+.pb.img-pb{background:linear-gradient(90deg,var(--img),var(--grn))}
+.pb.pdf-pb{background:linear-gradient(90deg,var(--pdf),var(--yel))}
+.pb.vid-pb{background:linear-gradient(90deg,var(--vid),var(--img))}
+.res{display:none;border-radius:var(--r2);padding:18px;text-align:center;margin-top:14px}
+.res.show{display:block;animation:fu .4s ease both}
+.res.img-res{background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2)}
+.res.pdf-res{background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.2)}
+.res.vid-res{background:rgba(123,47,255,.06);border:1px solid rgba(123,47,255,.2)}
+.rbadge{display:inline-block;border-radius:50px;padding:3px 16px;font-size:.75rem;font-weight:700;margin-bottom:9px}
+.rbadge.img-rb{background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.3);color:var(--img)}
+.rbadge.pdf-rb{background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.3);color:var(--pdf)}
+.rbadge.vid-rb{background:rgba(123,47,255,.12);border:1px solid rgba(123,47,255,.3);color:var(--vid)}
+.rinfo{font-size:.8rem;color:var(--muted);margin-bottom:12px}
+.multi-dl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.bdl{display:inline-flex;align-items:center;gap:7px;padding:11px 28px;border-radius:50px;font-weight:800;font-size:.88rem;text-decoration:none;transition:all .3s;border:none;cursor:pointer}
+.bdl.img-dl{background:linear-gradient(135deg,var(--grn),#00d48a);color:#050508}
+.bdl.pdf-dl{background:linear-gradient(135deg,var(--pdf),#cc4422);color:#fff}
+.bdl.vid-dl{background:linear-gradient(135deg,var(--vid),#5511cc);color:#fff}
+.bdl:hover{transform:translateY(-2px)}
+.info-box{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);padding:16px;text-align:left;font-size:.82rem;line-height:1.8;color:var(--muted);white-space:pre-wrap}
+.hg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.hc{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:24px 20px;text-align:center;position:relative;overflow:hidden}
+.hc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.hc:nth-child(1)::before{background:linear-gradient(90deg,var(--img),var(--vid))}
+.hc:nth-child(2)::before{background:linear-gradient(90deg,var(--pdf),var(--yel))}
+.hc:nth-child(3)::before{background:linear-gradient(90deg,var(--vid),var(--grn))}
+.hn{font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1;margin-bottom:10px}
+.ht{font-weight:700;margin-bottom:6px;font-size:.92rem}
+.hd{font-size:.78rem;color:var(--muted);line-height:1.55}
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.fc{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:20px;display:flex;align-items:flex-start;gap:12px;transition:all .3s}
+.fc:hover{border-color:var(--border2);transform:translateY(-2px)}
+.fi2{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.ft-t{font-weight:700;margin-bottom:3px;font-size:.9rem}
+.fd{font-size:.75rem;color:var(--muted);line-height:1.5}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24px;text-align:center;color:var(--muted);font-size:.76rem}
+footer strong{color:var(--text)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--s2);border:1px solid var(--border);border-radius:var(--r2);padding:12px 18px;font-size:.83rem;box-shadow:0 10px 36px rgba(0,0,0,.5);opacity:0;transform:translateY(14px);transition:all .3s;pointer-events:none;max-width:280px}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{border-color:rgba(0,255,179,.35)}.toast.err{border-color:rgba(255,107,53,.35)}
+.stb{position:fixed;bottom:24px;left:24px;z-index:200;width:42px;height:42px;background:linear-gradient(135deg,var(--img),var(--vid));border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-size:1rem;box-shadow:0 5px 18px rgba(0,212,255,.25);opacity:0;transform:translateY(8px);transition:all .3s;color:#fff}
+.stb.show{opacity:1;transform:translateY(0)}
+.loading-overlay{position:absolute;inset:0;background:rgba(5,5,8,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;border-radius:var(--r2);display:none}
+.loading-overlay.show{display:flex}
+.spin{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--img);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:640px){
+  h1{font-size:2.8rem}.tg{grid-template-columns:1fr 1fr}.ctrls{grid-template-columns:1fr}.hg{grid-template-columns:1fr}.cat-tabs{gap:6px}.cat-tab{padding:9px 16px;font-size:.8rem}.nav-tag{display:none}.act-row{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+<div class="bg"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div></div>
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="nav-in">
+    <div class="logo"><span class="c1">Convert</span><span class="c2">Hub</span><span class="c3">.io</span></div>
+    <div class="lang-b">
+      <button class="lb on" onclick="setLang('en')">🇬🇧 EN</button>
+      <button class="lb" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button class="lb" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
+    <div class="nav-tag" data-i="ntag">✦ 100% Free · No sign-up</div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="htag" data-i="htag">🚀 Images · PDF · Video — All in One</div>
+  <h1>
+    <span class="g1" data-i="h1">THE HUB</span><br>
+    <span data-i="h2">FOR ALL YOUR</span><br>
+    <span class="g2" data-i="h3">MEDIA TOOLS</span>
+  </h1>
+  <p class="hsub" data-i="hsub">Convert, compress, resize images. Merge, split, compress real PDFs. Extract video frames. Everything free, instant, and 100% private.</p>
+  <div class="cat-tabs">
+    <div class="cat-tab img-t on" onclick="setCategory('img')"><span>🖼️</span> <span data-i="ct1">Images</span></div>
+    <div class="cat-tab pdf-t" onclick="setCategory('pdf')"><span>📄</span> <span data-i="ct2">PDF</span></div>
+    <div class="cat-tab vid-t" onclick="setCategory('vid')"><span>🎬</span> <span data-i="ct3">Video</span></div>
+  </div>
+  <div class="stats">
+    <div class="st"><div class="sn c-img">8</div><div class="sl" data-i="s1">Image Tools</div></div>
+    <div class="st"><div class="sn c-pdf">5</div><div class="sl" data-i="s2">PDF Tools</div></div>
+    <div class="st"><div class="sn c-vid">3</div><div class="sl" data-i="s3">Video Tools</div></div>
+    <div class="st"><div class="sn c-grn">3</div><div class="sl" data-i="s4">Languages</div></div>
+  </div>
+</div>
+
+<div class="drop-wrap">
+  <div class="dz img-mode" id="dz" onclick="document.getElementById('fi').click()">
+    <input type="file" id="fi" accept="image/*" onchange="handleFile(this.files[0])">
+    <div class="dz-ico img-ico" id="dzIco">🖼️</div>
+    <div class="dz-t" data-i="dzt">Drop your file here</div>
+    <div class="dz-s" data-i="dzs">or click to browse</div>
+    <button class="dz-btn img-btn" id="dzBtn" data-i="dzb">📁 Choose File</button>
+    <div class="fmts" id="fmts"><span class="fmt">JPG</span><span class="fmt">PNG</span><span class="fmt">WebP</span><span class="fmt">GIF</span><span class="fmt">BMP</span></div>
+  </div>
+</div>
+
+<!-- IMAGE TOOLS -->
+<div class="tool-section active" id="sec-img">
+  <div class="sec">
+    <div class="sh"><div class="sh-line img-l"></div><div><div class="sh-title" data-i="it">IMAGE TOOLS</div><div class="sh-sub" data-i="is">8 professional tools — instant & free</div></div></div>
+    <div class="tg">
+      <div class="tc img-tc" onclick="selectTool('compress','img')" id="tc-compress"><div class="tbadge pop" data-i="pop">POPULAR</div><div class="ti ti-img">⚡</div><div class="tn" data-i="n1">Compress</div><div class="td" data-i="d1">Reduce file size up to 90% without quality loss</div></div>
+      <div class="tc img-tc" onclick="selectTool('convert','img')" id="tc-convert"><div class="ti ti-img">🔄</div><div class="tn" data-i="n2">Convert</div><div class="td" data-i="d2">Switch between JPG, PNG, WebP instantly</div></div>
+      <div class="tc img-tc" onclick="selectTool('resize','img')" id="tc-resize"><div class="ti ti-img">📐</div><div class="tn" data-i="n3">Resize</div><div class="td" data-i="d3">Set exact dimensions with ratio lock</div></div>
+      <div class="tc img-tc" onclick="selectTool('crop','img')" id="tc-crop"><div class="ti ti-img">✂️</div><div class="tn" data-i="n4">Crop</div><div class="td" data-i="d4">Crop to 1:1, 16:9, 4:3 and more</div></div>
+      <div class="tc img-tc" onclick="selectTool('rotate','img')" id="tc-rotate"><div class="ti ti-img">🔃</div><div class="tn" data-i="n5">Rotate & Flip</div><div class="td" data-i="d5">Rotate to any angle or mirror</div></div>
+      <div class="tc img-tc" onclick="selectTool('filter','img')" id="tc-filter"><div class="ti ti-img">🎨</div><div class="tn" data-i="n6">Filters</div><div class="td" data-i="d6">Grayscale, sepia, blur, sharpen & more</div></div>
+      <div class="tc img-tc" onclick="selectTool('watermark','img')" id="tc-watermark"><div class="tbadge nw" data-i="nw">NEW</div><div class="ti ti-img">🔏</div><div class="tn" data-i="n7">Watermark</div><div class="td" data-i="d7">Add custom text to protect images</div></div>
+      <div class="tc img-tc" onclick="selectTool('enhance','img')" id="tc-enhance"><div class="tbadge nw" data-i="nw">NEW</div><div class="ti ti-img">✨</div><div class="tn" data-i="n8">Enhance</div><div class="td" data-i="d8">Auto-enhance brightness, contrast, saturation</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PDF TOOLS -->
+<div class="tool-section" id="sec-pdf">
+  <div class="sec">
+    <div class="sh"><div class="sh-line pdf-l"></div><div><div class="sh-title" data-i="pt">PDF TOOLS</div><div class="sh-sub" data-i="ps">5 real PDF tools powered by pdf-lib — instant & free</div></div></div>
+    <div class="tg">
+      <div class="tc pdf-tc" onclick="selectTool('pdf-compress','pdf')" id="tc-pdf-compress"><div class="tbadge hot" data-i="hot">HOT</div><div class="ti ti-pdf">📦</div><div class="tn" data-i="pn1">Compress PDF</div><div class="td" data-i="pd1">Reduce PDF size while preserving quality</div></div>
+      <div class="tc pdf-tc" onclick="selectTool('pdf-to-img','pdf')" id="tc-pdf-to-img"><div class="tbadge pop" data-i="pop">POPULAR</div><div class="ti ti-pdf">🖼️</div><div class="tn" data-i="pn2">PDF → Images</div><div class="td" data-i="pd2">Convert each PDF page to JPG/PNG image</div></div>
+      <div class="tc pdf-tc" onclick="selectTool('img-to-pdf','pdf')" id="tc-img-to-pdf"><div class="ti ti-pdf">📄</div><div class="tn" data-i="pn3">Images → PDF</div><div class="td" data-i="pd3">Convert one or multiple images into a PDF</div></div>
+      <div class="tc pdf-tc" onclick="selectTool('pdf-rotate','pdf')" id="tc-pdf-rotate"><div class="ti ti-pdf">🔃</div><div class="tn" data-i="pn4">Rotate PDF</div><div class="td" data-i="pd4">Rotate all pages of a PDF document</div></div>
+      <div class="tc pdf-tc" onclick="selectTool('pdf-info','pdf')" id="tc-pdf-info"><div class="ti ti-pdf">ℹ️</div><div class="tn" data-i="pn5">PDF Info</div><div class="td" data-i="pd5">View detailed info and metadata of any PDF</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO TOOLS -->
+<div class="tool-section" id="sec-vid">
+  <div class="sec">
+    <div class="sh"><div class="sh-line vid-l"></div><div><div class="sh-title" data-i="vt">VIDEO TOOLS</div><div class="sh-sub" data-i="vs">3 video tools — instant & free</div></div></div>
+    <div class="tg">
+      <div class="tc vid-tc" onclick="selectTool('vid-snapshot','vid')" id="tc-vid-snapshot"><div class="tbadge nw" data-i="nw">NEW</div><div class="ti ti-vid">📸</div><div class="tn" data-i="vn1">Extract Frame</div><div class="td" data-i="vd1">Extract any frame from your video as image</div></div>
+      <div class="tc vid-tc" onclick="selectTool('vid-thumb','vid')" id="tc-vid-thumb"><div class="ti ti-vid">🎞️</div><div class="tn" data-i="vn2">Multi Frames</div><div class="td" data-i="vd2">Extract multiple frames at different moments</div></div>
+      <div class="tc vid-tc" onclick="selectTool('vid-info','vid')" id="tc-vid-info"><div class="ti ti-vid">ℹ️</div><div class="tn" data-i="vn3">Video Info</div><div class="td" data-i="vd3">Get detailed info about any video file</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKSPACE -->
+<div id="ws">
+  <div class="ws-wrap">
+    <div class="ws-card" style="position:relative">
+      <div class="loading-overlay" id="loadOverlay">
+        <div class="spin"></div>
+        <div style="font-size:.85rem;color:var(--muted)" id="loadMsg">Processing...</div>
+      </div>
+      <div class="ws-hdr">
+        <div class="ws-ico img-ico2" id="wsIco">⚡</div>
+        <div><div class="ws-t" id="wsT">COMPRESS</div><div class="ws-s" data-i="wss">Adjust settings then click Apply</div></div>
+      </div>
+      <div class="prev" id="prevBox"><div class="prev-e" data-i="pe">Load a file to get started</div></div>
+      <div id="toolCtrl"></div>
+      <div class="act-row">
+        <button class="bp img-p" id="applyBtn" onclick="applyTool()">⚡ <span data-i="ab">Apply</span></button>
+        <button class="bs" onclick="resetWs()" data-i="rb">Reset</button>
+        <button class="bs" onclick="closeWs()" data-i="bb">← Back</button>
+      </div>
+      <div class="pw" id="pw"><div class="pb img-pb" id="pb"></div></div>
+      <div class="res img-res" id="resBox">
+        <div class="rbadge img-rb" id="resBadge"></div>
+        <div class="rinfo" id="resInfo"></div>
+        <div class="multi-dl" id="dlArea"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW -->
+<div class="sec">
+  <div class="sh"><div class="sh-line img-l"></div><div><div class="sh-title" data-i="hwt">HOW IT WORKS</div></div></div>
+  <div class="hg">
+    <div class="hc"><div class="hn" style="color:var(--img)">01</div><div class="ht" data-i="h1t">Choose a Tool</div><div class="hd" data-i="h1d">Pick from 16 professional tools across images, PDF and video</div></div>
+    <div class="hc"><div class="hn" style="color:var(--pdf)">02</div><div class="ht" data-i="h2t">Load Your File</div><div class="hd" data-i="h2d">Drag & drop or click. No file ever leaves your device.</div></div>
+    <div class="hc"><div class="hn" style="color:var(--vid)">03</div><div class="ht" data-i="h3t">Download</div><div class="hd" data-i="h3d">Your file is processed instantly. Click to save it.</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="sec">
+  <div class="sh"><div class="sh-line vid-l"></div><div><div class="sh-title" data-i="ftt">WHY CONVERTHUB</div></div></div>
+  <div class="fg">
+    <div class="fc"><div class="fi2">🔒</div><div><div class="ft-t" data-i="f1t">100% Private</div><div class="fd" data-i="f1d">Your files never leave your device. No server, no cloud, ever.</div></div></div>
+    <div class="fc"><div class="fi2">⚡</div><div><div class="ft-t" data-i="f2t">Lightning Fast</div><div class="fd" data-i="f2d">Instant processing powered by modern browser APIs.</div></div></div>
+    <div class="fc"><div class="fi2">🌍</div><div><div class="ft-t" data-i="f3t">3 Languages</div><div class="fd" data-i="f3d">English, French and Spanish for global reach.</div></div></div>
+    <div class="fc"><div class="fi2">📱</div><div><div class="ft-t" data-i="f4t">All Devices</div><div class="fd" data-i="f4d">Works perfectly on phone, tablet and desktop.</div></div></div>
+    <div class="fc"><div class="fi2">🆓</div><div><div class="ft-t" data-i="f5t">Always Free</div><div class="fd" data-i="f5d">No hidden costs, no subscriptions, no limits.</div></div></div>
+    <div class="fc"><div class="fi2">🎯</div><div><div class="ft-t" data-i="f6t">16 Pro Tools</div><div class="fd" data-i="f6d">Images + PDF + Video. Everything in one place.</div></div></div>
+  </div>
+</div>
+
+<footer><p>© 2026 <strong>ConvertHub.io</strong> — <span data-i="ft2">All rights reserved · Your files stay on your device · Made with ❤️</span></p></footer>
+<button class="stb" id="stb" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="toast" id="toast"></div>
+
+<script>
+// Setup PDF.js worker
+if(typeof pdfjsLib !== 'undefined') pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// CURSOR
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('button,a,.tc,.dz').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px'});
+});
+window.addEventListener('scroll',()=>document.getElementById('stb').classList.toggle('show',scrollY>300));
+
+const T={
+  en:{ntag:'✦ 100% Free · No sign-up',htag:'🚀 Images · PDF · Video — All in One',h1:'THE HUB',h2:'FOR ALL YOUR',h3:'MEDIA TOOLS',hsub:'Convert, compress, resize images. Merge, split, compress real PDFs. Extract video frames. Everything free, instant, and 100% private.',s1:'Image Tools',s2:'PDF Tools',s3:'Video Tools',s4:'Languages',ct1:'Images',ct2:'PDF',ct3:'Video',dzt:'Drop your file here',dzs:'or click to browse',dzb:'📁 Choose File',it:'IMAGE TOOLS',is:'8 professional tools — instant & free',pt:'PDF TOOLS',ps:'5 real PDF tools powered by pdf-lib',vt:'VIDEO TOOLS',vs:'3 video tools — instant & free',pop:'POPULAR',nw:'NEW',hot:'HOT',n1:'Compress',d1:'Reduce file size up to 90% without quality loss',n2:'Convert',d2:'Switch between JPG, PNG, WebP instantly',n3:'Resize',d3:'Set exact dimensions with ratio lock',n4:'Crop',d4:'Crop to 1:1, 16:9, 4:3 and more',n5:'Rotate & Flip',d5:'Rotate to any angle or mirror',n6:'Filters',d6:'Grayscale, sepia, blur, sharpen & more',n7:'Watermark',d7:'Add custom text to protect images',n8:'Enhance',d8:'Auto-enhance brightness, contrast, saturation',pn1:'Compress PDF',pd1:'Reduce PDF size while preserving quality',pn2:'PDF → Images',pd2:'Convert each PDF page to JPG/PNG image',pn3:'Images → PDF',pd3:'Convert one or multiple images into a PDF',pn4:'Rotate PDF',pd4:'Rotate all pages of a PDF document',pn5:'PDF Info',pd5:'View detailed info and metadata of any PDF',vn1:'Extract Frame',vd1:'Extract any frame from your video as image',vn2:'Multi Frames',vd2:'Extract multiple frames at different moments',vn3:'Video Info',vd3:'Get detailed info about any video file',wss:'Adjust settings then click Apply',pe:'Load a file to get started',ab:'Apply',rb:'Reset',bb:'← Back',dlb:'Download',hwt:'HOW IT WORKS',h1t:'Choose a Tool',h1d:'Pick from 16 professional tools across images, PDF and video',h2t:'Load Your File',h2d:'Drag & drop or click. No file ever leaves your device.',h3t:'Download',h3d:'Your file is processed instantly. Click to save it.',ftt:'WHY CONVERTHUB',f1t:'100% Private',f1d:'Your files never leave your device. No server, no cloud, ever.',f2t:'Lightning Fast',f2d:'Instant processing powered by modern browser APIs.',f3t:'3 Languages',f3d:'English, French and Spanish for global reach.',f4t:'All Devices',f4d:'Works perfectly on phone, tablet and desktop.',f5t:'Always Free',f5d:'No hidden costs, no subscriptions, no limits.',f6t:'16 Pro Tools',f6d:'Images + PDF + Video. Everything in one place.',ft2:"All rights reserved · Your files stay on your device · Made with ❤️",ql:'Quality',fl:'Output Format',wl:'Width (px)',hl:'Height (px)',krl:'Keep ratio',al:'Angle',fll:'Flip',flo:'None|Horizontal|Vertical',crl:'Ratio',ftl:'Filter',fto:'Grayscale|Sepia|Blur|Sharpen|Invert',bl:'Blur',wtl:'Watermark Text',wpl:'Position',wpo:'Bottom Right|Bottom Left|Top Right|Top Left|Center',wol:'Opacity',brl:'Brightness',cntl:'Contrast',sal:'Saturation',vfl:'Frame Time (s)',pral:'Rotation',pralo:'90°|180°|270°',saved:'Saved',orig:'Original',result:'Result',done:'✅ Done!',err:'❌ Error',processing:'Processing...',pg:'Page'},
+  fr:{ntag:'✦ 100% Gratuit · Sans inscription',htag:'🚀 Images · PDF · Vidéo — Tout en Un',h1:'LE HUB',h2:'DE TOUS VOS',h3:'OUTILS MÉDIA',hsub:'Convertissez et compressez vos images. Compressez, convertissez et gérez vos PDF. Extrayez des images vidéo. Tout gratuit, instantané et privé.',s1:'Outils Image',s2:'Outils PDF',s3:'Outils Vidéo',s4:'Langues',ct1:'Images',ct2:'PDF',ct3:'Vidéo',dzt:'Déposez votre fichier ici',dzs:'ou cliquez pour parcourir',dzb:'📁 Choisir un fichier',it:'OUTILS IMAGE',is:'8 outils professionnels — instantanés et gratuits',pt:'OUTILS PDF',ps:'5 vrais outils PDF propulsés par pdf-lib',vt:'OUTILS VIDÉO',vs:'3 outils vidéo — instantanés et gratuits',pop:'POPULAIRE',nw:'NOUVEAU',hot:'TENDANCE',n1:'Compresser',d1:'Réduisez la taille jusqu\'à 90% sans perte visible',n2:'Convertir',d2:'Changez de format JPG, PNG, WebP instantanément',n3:'Redimensionner',d3:'Définissez les dimensions exactes avec ratio verrouillé',n4:'Rogner',d4:'Rognez en 1:1, 16:9, 4:3 et plus',n5:'Rotation & Miroir',d5:'Rotation ou retournement de l\'image',n6:'Filtres',d6:'Niveaux de gris, sépia, flou, netteté & plus',n7:'Filigrane',d7:'Ajoutez un texte pour protéger vos images',n8:'Améliorer',d8:'Amélioration auto luminosité, contraste, saturation',pn1:'Compresser PDF',pd1:'Réduisez la taille du PDF en gardant la qualité',pn2:'PDF → Images',pd2:'Convertissez chaque page PDF en image JPG/PNG',pn3:'Images → PDF',pd3:'Convertissez une ou plusieurs images en PDF',pn4:'Rotation PDF',pd4:'Faites pivoter toutes les pages d\'un PDF',pn5:'Infos PDF',pd5:'Consultez les infos et métadonnées d\'un PDF',vn1:'Extraire une image',vd1:'Extrayez n\'importe quelle image de votre vidéo',vn2:'Multi Images',vd2:'Extrayez plusieurs images à différents moments',vn3:'Infos Vidéo',vd3:'Obtenez les détails de votre fichier vidéo',wss:'Ajustez les paramètres puis cliquez sur Appliquer',pe:'Chargez un fichier pour commencer',ab:'Appliquer',rb:'Réinitialiser',bb:'← Retour',dlb:'Télécharger',hwt:'COMMENT ÇA MARCHE',h1t:'Choisissez un outil',h1d:'Choisissez parmi 16 outils professionnels : images, PDF et vidéo',h2t:'Chargez votre fichier',h2d:'Glissez-déposez ou cliquez. Aucun fichier ne quitte votre appareil.',h3t:'Téléchargez',h3d:'Votre fichier est traité instantanément. Cliquez pour sauvegarder.',ftt:'POURQUOI CONVERTHUB',f1t:'100% Privé',f1d:'Vos fichiers ne quittent jamais votre appareil.',f2t:'Ultra Rapide',f2d:'Traitement instantané par les APIs modernes du navigateur.',f3t:'3 Langues',f3d:'Anglais, français et espagnol pour une portée mondiale.',f4t:'Tous Appareils',f4d:'Téléphone, tablette et ordinateur.',f5t:'Toujours Gratuit',f5d:'Aucun coût caché, aucun abonnement, aucune limite.',f6t:'16 Outils Pro',f6d:'Images + PDF + Vidéo. Tout en un seul endroit.',ft2:"Tous droits réservés · Vos fichiers restent sur votre appareil · Fait avec ❤️",ql:'Qualité',fl:'Format de sortie',wl:'Largeur (px)',hl:'Hauteur (px)',krl:'Conserver le ratio',al:'Angle',fll:'Miroir',flo:'Aucun|Horizontal|Vertical',crl:'Ratio',ftl:'Filtre',fto:'Niveaux de gris|Sépia|Flou|Netteté|Inverser',bl:'Flou',wtl:'Texte du filigrane',wpl:'Position',wpo:'Bas droite|Bas gauche|Haut droite|Haut gauche|Centre',wol:'Opacité',brl:'Luminosité',cntl:'Contraste',sal:'Saturation',vfl:'Moment (s)',pral:'Rotation',pralo:'90°|180°|270°',saved:'Économisé',orig:'Original',result:'Résultat',done:'✅ Fait !',err:'❌ Erreur',processing:'Traitement...',pg:'Page'},
+  es:{ntag:'✦ 100% Gratis · Sin registro',htag:'🚀 Imágenes · PDF · Vídeo — Todo en Uno',h1:'EL HUB',h2:'DE TODAS TUS',h3:'HERRAMIENTAS',hsub:'Convierte y comprime imágenes. Comprime, convierte y gestiona PDFs. Extrae fotogramas de vídeo. Todo gratis, instantáneo y privado.',s1:'Herr. Imagen',s2:'Herr. PDF',s3:'Herr. Vídeo',s4:'Idiomas',ct1:'Imágenes',ct2:'PDF',ct3:'Vídeo',dzt:'Arrastra tu archivo aquí',dzs:'o haz clic para explorar',dzb:'📁 Elegir Archivo',it:'HERRAMIENTAS DE IMAGEN',is:'8 herramientas profesionales — instantáneas y gratis',pt:'HERRAMIENTAS PDF',ps:'5 herramientas PDF reales con pdf-lib',vt:'HERRAMIENTAS DE VÍDEO',vs:'3 herramientas de vídeo — gratis',pop:'POPULAR',nw:'NUEVO',hot:'TENDENCIA',n1:'Comprimir',d1:'Reduce el tamaño hasta 90% sin pérdida visible',n2:'Convertir',d2:'Cambia entre JPG, PNG, WebP al instante',n3:'Redimensionar',d3:'Define dimensiones exactas con ratio bloqueado',n4:'Recortar',d4:'Recorta en 1:1, 16:9, 4:3 y más',n5:'Rotar y Voltear',d5:'Rota a cualquier ángulo o voltea',n6:'Filtros',d6:'Escala de grises, sepia, desenfoque & más',n7:'Marca de Agua',d7:'Añade texto para proteger tus imágenes',n8:'Mejorar',d8:'Mejora automática brillo, contraste, saturación',pn1:'Comprimir PDF',pd1:'Reduce el tamaño del PDF manteniendo calidad',pn2:'PDF → Imágenes',pd2:'Convierte cada página PDF a imagen JPG/PNG',pn3:'Imágenes → PDF',pd3:'Convierte una o varias imágenes en PDF',pn4:'Rotar PDF',pd4:'Rota todas las páginas de un documento PDF',pn5:'Info PDF',pd5:'Consulta información y metadatos de cualquier PDF',vn1:'Extraer Fotograma',vd1:'Extrae cualquier fotograma de tu vídeo',vn2:'Multi Fotogramas',vd2:'Extrae varios fotogramas en diferentes momentos',vn3:'Info del Vídeo',vd3:'Obtén información detallada de tu archivo de vídeo',wss:'Ajusta la configuración y haz clic en Aplicar',pe:'Carga un archivo para empezar',ab:'Aplicar',rb:'Restablecer',bb:'← Volver',dlb:'Descargar',hwt:'CÓMO FUNCIONA',h1t:'Elige una Herramienta',h1d:'Elige entre 16 herramientas: imágenes, PDF y vídeo',h2t:'Carga tu Archivo',h2d:'Arrastra y suelta o haz clic. Ningún archivo sale de tu dispositivo.',h3t:'Descarga',h3d:'Tu archivo se procesa al instante. Haz clic para guardar.',ftt:'POR QUÉ CONVERTHUB',f1t:'100% Privado',f1d:'Tus archivos nunca salen de tu dispositivo.',f2t:'Ultra Rápido',f2d:'Procesamiento instantáneo con APIs modernas del navegador.',f3t:'3 Idiomas',f3d:'Inglés, francés y español para alcance global.',f4t:'Todos los Dispositivos',f4d:'Móvil, tablet y ordenador.',f5t:'Siempre Gratis',f5d:'Sin costos ocultos, sin suscripciones, sin límites.',f6t:'16 Herr. Pro',f6d:'Imágenes + PDF + Vídeo. Todo en un lugar.',ft2:"Todos los derechos reservados · Tus archivos permanecen en tu dispositivo · Hecho con ❤️",ql:'Calidad',fl:'Formato salida',wl:'Ancho (px)',hl:'Alto (px)',krl:'Mantener ratio',al:'Ángulo',fll:'Voltear',flo:'Ninguno|Horizontal|Vertical',crl:'Ratio',ftl:'Filtro',fto:'Escala grises|Sepia|Desenfoque|Nitidez|Invertir',bl:'Desenfoque',wtl:'Texto de marca',wpl:'Posición',wpo:'Abajo derecha|Abajo izquierda|Arriba derecha|Arriba izquierda|Centro',wol:'Opacidad',brl:'Brillo',cntl:'Contraste',sal:'Saturación',vfl:'Momento (s)',pral:'Rotación',pralo:'90°|180°|270°',saved:'Ahorrado',orig:'Original',result:'Resultado',done:'✅ ¡Listo!',err:'❌ Error',processing:'Procesando...',pg:'Página'}
+};
+
+let lang='en',curTool=null,curCat='img',curFile=null,origSize=0;
+let img=new Image(),pdfDoc=null;
+
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[l][k])el.textContent=T[l][k]});
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('on'));
+  document.querySelector(`.lb[onclick="setLang('${l}')"]`).classList.add('on');
+  document.documentElement.lang=l;
+  if(curTool)renderCtrl(curTool,curCat);
+}
+
+function setCategory(cat){
+  curCat=cat;
+  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelector(`.cat-tab.${cat}-t`).classList.add('on');
+  document.querySelectorAll('.tool-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+cat).classList.add('active');
+  const dz=document.getElementById('dz'),ico=document.getElementById('dzIco'),btn=document.getElementById('dzBtn'),fi=document.getElementById('fi');
+  dz.className='dz '+cat+'-mode';
+  if(cat==='img'){ico.className='dz-ico img-ico';ico.textContent='🖼️';btn.className='dz-btn img-btn';fi.accept='image/*';document.getElementById('fmts').innerHTML='<span class="fmt">JPG</span><span class="fmt">PNG</span><span class="fmt">WebP</span><span class="fmt">GIF</span>'}
+  else if(cat==='pdf'){ico.className='dz-ico pdf-ico';ico.textContent='📄';btn.className='dz-btn pdf-btn';fi.accept='.pdf,image/*';document.getElementById('fmts').innerHTML='<span class="fmt">PDF</span><span class="fmt">JPG→PDF</span><span class="fmt">PNG→PDF</span>'}
+  else{ico.className='dz-ico vid-ico';ico.textContent='🎬';btn.className='dz-btn vid-btn';fi.accept='video/*';document.getElementById('fmts').innerHTML='<span class="fmt">MP4</span><span class="fmt">AVI</span><span class="fmt">MOV</span><span class="fmt">WebM</span>'}
+  closeWs();pdfDoc=null;
+}
+
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0])});
+
+function handleFile(f){
+  if(!f)return;
+  curFile=f;origSize=f.size;
+  if(curCat==='img'&&f.type.startsWith('image/')){
+    const r=new FileReader();r.onload=e=>{img.src=e.target.result;img.onload=()=>{updatePrev();if(curTool)showWs()}};r.readAsDataURL(f);
+  } else if(curCat==='pdf'){
+    if(f.type==='application/pdf'||f.name.endsWith('.pdf')){
+      loadPDFPreview(f);
+    } else if(f.type.startsWith('image/')){
+      const r=new FileReader();r.onload=e=>{img.src=e.target.result;img.onload=()=>{updatePrev();if(curTool)showWs()}};r.readAsDataURL(f);
+    }
+  } else if(curCat==='vid'&&f.type.startsWith('video/')){
+    updatePrev();if(curTool)showWs();
+  } else {
+    showToast(T[lang].err+' Wrong file type','err');
+  }
+}
+
+async function loadPDFPreview(f){
+  showLoader('Loading PDF...');
+  try{
+    const ab=await f.arrayBuffer();
+    pdfDoc=await pdfjsLib.getDocument({data:ab}).promise;
+    const pb=document.getElementById('prevBox');
+    pb.innerHTML='';
+    const wrap=document.createElement('div');wrap.className='pdf-pages';
+    const numPages=Math.min(pdfDoc.numPages,6);
+    for(let i=1;i<=numPages;i++){
+      const page=await pdfDoc.getPage(i);
+      const vp=page.getViewport({scale:.4});
+      const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+      await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+      const wrap2=document.createElement('div');wrap2.className='pdf-page-thumb';wrap2.appendChild(c);
+      wrap.appendChild(wrap2);
+    }
+    if(pdfDoc.numPages>6){const m=document.createElement('div');m.style.cssText='padding:12px;color:var(--muted);font-size:.78rem;align-self:center';m.textContent=`+${pdfDoc.numPages-6} more pages`;wrap.appendChild(m)}
+    pb.appendChild(wrap);
+    hideLoader();if(curTool)showWs();
+  }catch(e){hideLoader();showToast(T[lang].err+' Invalid PDF','err')}
+}
+
+function updatePrev(){
+  const pb=document.getElementById('prevBox');
+  if(curCat==='img') pb.innerHTML=`<img src="${img.src}" alt="preview">`;
+  else if(curCat==='vid'){pb.innerHTML='';const v=document.createElement('video');v.src=URL.createObjectURL(curFile);v.controls=true;v.style.cssText='max-width:100%;max-height:280px';pb.appendChild(v)}
+}
+
+function selectTool(t,cat){
+  curTool=t;curCat=cat;
+  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('on'));
+  document.getElementById('tc-'+t).classList.add('on');
+  showWs();
+}
+
+const catIcons={img:{ico:'img-ico2',btn:'img-p',pb:'img-pb',res:'img-res',rb:'img-rb',dl:'img-dl'},pdf:{ico:'pdf-ico2',btn:'pdf-p',pb:'pdf-pb',res:'pdf-res',rb:'pdf-rb',dl:'pdf-dl'},vid:{ico:'vid-ico2',btn:'vid-p',pb:'vid-pb',res:'vid-res',rb:'vid-rb',dl:'vid-dl'}};
+const toolMeta={compress:{n:'COMPRESS',i:'⚡',c:'img'},convert:{n:'CONVERT',i:'🔄',c:'img'},resize:{n:'RESIZE',i:'📐',c:'img'},crop:{n:'CROP',i:'✂️',c:'img'},rotate:{n:'ROTATE',i:'🔃',c:'img'},filter:{n:'FILTERS',i:'🎨',c:'img'},watermark:{n:'WATERMARK',i:'🔏',c:'img'},enhance:{n:'ENHANCE',i:'✨',c:'img'},'pdf-compress':{n:'COMPRESS PDF',i:'📦',c:'pdf'},'pdf-to-img':{n:'PDF → IMAGES',i:'🖼️',c:'pdf'},'img-to-pdf':{n:'IMAGES → PDF',i:'📄',c:'pdf'},'pdf-rotate':{n:'ROTATE PDF',i:'🔃',c:'pdf'},'pdf-info':{n:'PDF INFO',i:'ℹ️',c:'pdf'},'vid-snapshot':{n:'EXTRACT FRAME',i:'📸',c:'vid'},'vid-thumb':{n:'MULTI FRAMES',i:'🎞️',c:'vid'},'vid-info':{n:'VIDEO INFO',i:'ℹ️',c:'vid'}};
+
+function showWs(){
+  if(!curTool)return;
+  const tl=T[lang];
+  const tm=toolMeta[curTool];const cat=tm.c;const ci=catIcons[cat];
+  document.getElementById('wsIco').textContent=tm.i;document.getElementById('wsIco').className=`ws-ico ${ci.ico}`;
+  document.getElementById('wsT').textContent=tm.n;
+  document.getElementById('applyBtn').className=`bp ${ci.btn}`;
+  document.getElementById('pb').className=`pb ${ci.pb}`;
+  document.getElementById('resBox').className=`res ${ci.res}`;
+  document.getElementById('resBadge').className=`rbadge ${ci.rb}`;
+  document.getElementById('ws').style.display='block';
+  document.getElementById('resBox').classList.remove('show');
+  renderCtrl(curTool,cat);
+  if(curFile&&cat==='img'&&img.src)updatePrev();
+  else if(curFile&&cat==='vid')updatePrev();
+  document.getElementById('ws').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeWs(){document.getElementById('ws').style.display='none';document.querySelectorAll('.tc').forEach(c=>c.classList.remove('on'));curTool=null}
+function resetWs(){document.getElementById('resBox').classList.remove('show');renderCtrl(curTool,curCat);if(curFile&&curCat==='img'&&img.src)updatePrev();else if(curFile&&curCat==='vid')updatePrev()}
+
+function renderCtrl(t,cat){
+  const c=document.getElementById('toolCtrl'),l=T[lang];
+  const rc=cat==='img'?'img-r':cat==='pdf'?'pdf-r':'vid-r';
+  const vc=cat==='img'?'c-img':cat==='pdf'?'c-pdf':'c-vid';
+  let h='<div class="ctrls">';
+  if(t==='compress'){h+=`<div class="cg full"><label>${l.ql} <span class="rv ${vc}" id="qv">80%</span></label><input type="range" class="${rc}" id="q" min="1" max="100" value="80" oninput="document.getElementById('qv').textContent=this.value+'%'"></div>`}
+  else if(t==='convert'){h+=`<div class="cg full"><label>${l.fl}</label><select id="of"><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WebP</option></select></div>`}
+  else if(t==='resize'){h+=`<div class="cg"><label>${l.wl}</label><input type="number" id="rw" value="${img.width||800}" min="1"></div><div class="cg"><label>${l.hl}</label><input type="number" id="rh" value="${img.height||600}" min="1"></div><div class="cg full"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="kr" checked style="accent-color:var(--img)"> ${l.krl}</label></div>`}
+  else if(t==='crop'){h+=`<div class="cg full"><label>${l.crl}</label><select id="cr"><option value="1:1">1:1</option><option value="4:3">4:3</option><option value="16:9">16:9</option><option value="3:2">3:2</option><option value="9:16">9:16</option><option value="free">Free</option></select></div>`}
+  else if(t==='rotate'){const fo=l.flo.split('|');h+=`<div class="cg"><label>${l.al} <span class="rv ${vc}" id="av">0°</span></label><input type="range" class="${rc}" id="ra" min="0" max="360" value="0" step="1" oninput="document.getElementById('av').textContent=this.value+'°'"></div><div class="cg"><label>${l.fll}</label><select id="fl2"><option value="none">${fo[0]}</option><option value="h">${fo[1]}</option><option value="v">${fo[2]}</option></select></div>`}
+  else if(t==='filter'){const fo=l.fto.split('|');h+=`<div class="cg full"><label>${l.ftl}</label><select id="flt"><option value="grayscale">${fo[0]}</option><option value="sepia">${fo[1]}</option><option value="blur">${fo[2]}</option><option value="sharpen">${fo[3]}</option><option value="invert">${fo[4]}</option></select></div><div class="cg full"><label>${l.bl} <span class="rv ${vc}" id="blv">3</span></label><input type="range" class="${rc}" id="bli" min="1" max="20" value="3" oninput="document.getElementById('blv').textContent=this.value"></div>`}
+  else if(t==='watermark'){const wo=l.wpo.split('|');h+=`<div class="cg full"><label>${l.wtl}</label><input type="text" id="wt" value="© ConvertHub.io"></div><div class="cg"><label>${l.wpl}</label><select id="wp"><option value="br">${wo[0]}</option><option value="bl">${wo[1]}</option><option value="tr">${wo[2]}</option><option value="tl">${wo[3]}</option><option value="c">${wo[4]}</option></select></div><div class="cg"><label>${l.wol} <span class="rv ${vc}" id="wov">70%</span></label><input type="range" class="${rc}" id="wo" min="10" max="100" value="70" oninput="document.getElementById('wov').textContent=this.value+'%'"></div>`}
+  else if(t==='enhance'){h+=`<div class="cg"><label>${l.brl} <span class="rv ${vc}" id="brv">0</span></label><input type="range" class="${rc}" id="bri" min="-100" max="100" value="0" oninput="document.getElementById('brv').textContent=this.value"></div><div class="cg"><label>${l.cntl} <span class="rv ${vc}" id="cnv">0</span></label><input type="range" class="${rc}" id="cni" min="-100" max="100" value="0" oninput="document.getElementById('cnv').textContent=this.value"></div><div class="cg full"><label>${l.sal} <span class="rv ${vc}" id="sav">0</span></label><input type="range" class="${rc}" id="sai" min="-100" max="100" value="0" oninput="document.getElementById('sav').textContent=this.value"></div>`}
+  else if(t==='pdf-compress'){h+=`<div class="cg full"><label>${l.ql} <span class="rv c-pdf" id="qv">75%</span></label><input type="range" class="pdf-r" id="q" min="10" max="100" value="75" oninput="document.getElementById('qv').textContent=this.value+'%'"></div>`}
+  else if(t==='pdf-to-img'){h+=`<div class="cg full"><label>${l.fl}</label><select id="of"><option value="image/jpeg">JPG</option><option value="image/png">PNG</option></select></div>`}
+  else if(t==='img-to-pdf'){h+=`<div class="cg full"><label>Page Size</label><select id="pgsz"><option value="a4">A4 (595×842pt)</option><option value="letter">Letter (612×792pt)</option><option value="fit">Fit to image</option></select></div>`}
+  else if(t==='pdf-rotate'){const ro=l.pralo.split('|');h+=`<div class="cg full"><label>${l.pral}</label><select id="pra"><option value="90">${ro[0]}</option><option value="180">${ro[1]}</option><option value="270">${ro[2]}</option></select></div>`}
+  else if(t==='pdf-info'||t==='vid-info'){h+=`<div class="cg full" style="text-align:center;padding:10px 0;color:var(--muted);font-size:.82rem">Click Apply to analyze your file</div>`}
+  else if(t==='vid-snapshot'||t==='vid-thumb'){h+=`<div class="cg full"><label>${l.vfl} <span class="rv c-vid" id="vfv">0.0</span></label><input type="range" class="vid-r" id="vft" min="0" max="120" value="0" step="0.1" oninput="document.getElementById('vfv').textContent=parseFloat(this.value).toFixed(1)"></div>`}
+  h+='</div>';c.innerHTML=h;
+  if(t==='resize'){
+    document.getElementById('rw').addEventListener('input',function(){if(document.getElementById('kr').checked&&img.width)document.getElementById('rh').value=Math.round(this.value*img.height/img.width)});
+    document.getElementById('rh').addEventListener('input',function(){if(document.getElementById('kr').checked&&img.height)document.getElementById('rw').value=Math.round(this.value*img.width/img.height)});
+  }
+}
+
+function applyTool(){
+  if(!curFile){document.getElementById('fi').click();return}
+  const cat=toolMeta[curTool]?.c||curCat;
+  if(cat==='pdf'){applyPdfTool();return}
+  if(cat==='vid'){applyVidTool();return}
+  showProg('img');
+  setTimeout(()=>{
+    try{
+      const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+      let w=img.width,h=img.height,mime='image/jpeg',q=.9,ext='jpg';
+      if(curTool==='compress'){q=(document.getElementById('q')?.value||80)/100;canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0);mime=curFile.type.includes('png')?'image/png':'image/jpeg';ext=mime==='image/png'?'png':'jpg'}
+      else if(curTool==='convert'){mime=document.getElementById('of').value;ext=mime.split('/')[1].replace('jpeg','jpg');canvas.width=w;canvas.height=h;if(mime==='image/jpeg'){ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h)}ctx.drawImage(img,0,0);q=.95}
+      else if(curTool==='resize'){w=parseInt(document.getElementById('rw').value)||w;h=parseInt(document.getElementById('rh').value)||h;canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0,w,h);q=.95}
+      else if(curTool==='crop'){const ratio=document.getElementById('cr').value;let tw=w,th=h;if(ratio!=='free'){const[rw2,rh2]=ratio.split(':').map(Number),r=rw2/rh2;if(w/h>r)tw=Math.round(h*r);else th=Math.round(w/r)}canvas.width=tw;canvas.height=th;ctx.drawImage(img,Math.round((w-tw)/2),Math.round((h-th)/2),tw,th,0,0,tw,th);q=.95}
+      else if(curTool==='rotate'){const deg=parseInt(document.getElementById('ra')?.value||0),fl=document.getElementById('fl2')?.value||'none',rad=deg*Math.PI/180,sin=Math.abs(Math.sin(rad)),cos=Math.abs(Math.cos(rad));canvas.width=Math.round(w*cos+h*sin);canvas.height=Math.round(w*sin+h*cos);ctx.translate(canvas.width/2,canvas.height/2);ctx.rotate(rad);if(fl==='h')ctx.scale(-1,1);else if(fl==='v')ctx.scale(1,-1);ctx.drawImage(img,-w/2,-h/2);q=.95}
+      else if(curTool==='filter'){canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0);const d=ctx.getImageData(0,0,w,h),p=d.data,flt=document.getElementById('flt')?.value,bl=parseInt(document.getElementById('bli')?.value||3);if(flt==='grayscale'){for(let i=0;i<p.length;i+=4){const g=.299*p[i]+.587*p[i+1]+.114*p[i+2];p[i]=p[i+1]=p[i+2]=g}}else if(flt==='sepia'){for(let i=0;i<p.length;i+=4){const r=p[i],g=p[i+1],b=p[i+2];p[i]=Math.min(255,r*.393+g*.769+b*.189);p[i+1]=Math.min(255,r*.349+g*.686+b*.168);p[i+2]=Math.min(255,r*.272+g*.534+b*.131)}}else if(flt==='invert'){for(let i=0;i<p.length;i+=4){p[i]=255-p[i];p[i+1]=255-p[i+1];p[i+2]=255-p[i+2]}}else if(flt==='blur'){ctx.filter=`blur(${bl}px)`;ctx.drawImage(img,0,0);ctx.filter='none'}else if(flt==='sharpen'){const k=[-1,-1,-1,-1,9,-1,-1,-1,-1],tmp=ctx.getImageData(0,0,w,h);for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){const idx=(y*w+x)*4;for(let ch=0;ch<3;ch++){let s=0;for(let ky=-1;ky<=1;ky++)for(let kx=-1;kx<=1;kx++)s+=tmp.data[((y+ky)*w+(x+kx))*4+ch]*k[(ky+1)*3+(kx+1)];p[idx+ch]=Math.min(255,Math.max(0,s))}}}if(flt!=='blur')ctx.putImageData(d,0,0);mime='image/png';ext='png';q=1}
+      else if(curTool==='watermark'){canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0);const txt=document.getElementById('wt')?.value||'ConvertHub.io',pos=document.getElementById('wp')?.value||'br',op=(document.getElementById('wo')?.value||70)/100,fs=Math.max(18,Math.round(w*.04));ctx.font=`bold ${fs}px Outfit,sans-serif`;ctx.globalAlpha=op;ctx.fillStyle='rgba(255,255,255,.9)';ctx.strokeStyle='rgba(0,0,0,.5)';ctx.lineWidth=2;const tw2=ctx.measureText(txt).width,pad=fs*.8;let x,y;if(pos==='br'){x=w-tw2-pad;y=h-pad}else if(pos==='bl'){x=pad;y=h-pad}else if(pos==='tr'){x=w-tw2-pad;y=fs+pad}else if(pos==='tl'){x=pad;y=fs+pad}else{x=(w-tw2)/2;y=h/2}ctx.strokeText(txt,x,y);ctx.fillText(txt,x,y);ctx.globalAlpha=1;q=.95}
+      else if(curTool==='enhance'){canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0);const bri=parseInt(document.getElementById('bri')?.value||0),cnt=parseInt(document.getElementById('cni')?.value||0),sat=parseInt(document.getElementById('sai')?.value||0),d2=ctx.getImageData(0,0,w,h),p2=d2.data,cf=259*(cnt+255)/(255*(259-cnt));for(let i=0;i<p2.length;i+=4){let r=p2[i],g=p2[i+1],b=p2[i+2];r=Math.min(255,Math.max(0,r+bri));g=Math.min(255,Math.max(0,g+bri));b=Math.min(255,Math.max(0,b+bri));r=Math.min(255,Math.max(0,cf*(r-128)+128));g=Math.min(255,Math.max(0,cf*(g-128)+128));b=Math.min(255,Math.max(0,cf*(b-128)+128));if(sat!==0){const gray=.299*r+.587*g+.114*b,sf=1+sat/100;r=Math.min(255,Math.max(0,gray+sf*(r-gray)));g=Math.min(255,Math.max(0,gray+sf*(g-gray)));b=Math.min(255,Math.max(0,gray+sf*(b-gray)))}p2[i]=r;p2[i+1]=g;p2[i+2]=b}ctx.putImageData(d2,0,0);mime='image/png';ext='png';q=1}
+      canvas.toBlob(blob=>{finalize([{blob,name:`converthub_${curTool}_${Date.now()}.${ext}`}],'img')},mime,q);
+    }catch(e){hideProg();showToast(T[lang].err+' '+e.message,'err')}
+  },300);
+}
+
+async function applyPdfTool(){
+  if(!curFile){document.getElementById('fi').click();return}
+  showLoader(T[lang].processing);
+  try{
+    if(curTool==='pdf-info'){
+      let info=`📄 File: ${curFile.name}\n📦 Size: ${fmtSz(curFile.size)}\n📋 Type: ${curFile.type||'application/pdf'}`;
+      if(pdfDoc){
+        info+=`\n📑 Pages: ${pdfDoc.numPages}`;
+        const meta=await pdfDoc.getMetadata().catch(()=>null);
+        if(meta?.info){const m=meta.info;if(m.Title)info+=`\n📝 Title: ${m.Title}`;if(m.Author)info+=`\n✍️ Author: ${m.Author}`;if(m.Creator)info+=`\n🛠️ Creator: ${m.Creator}`;if(m.CreationDate)info+=`\n📅 Created: ${m.CreationDate}`}
+        const p1=await pdfDoc.getPage(1);const vp=p1.getViewport({scale:1});info+=`\n📐 Page size: ${Math.round(vp.width)}×${Math.round(vp.height)} pt`;
+      }
+      hideLoader();
+      document.getElementById('resBadge').textContent='ℹ️ PDF Info';
+      document.getElementById('resInfo').innerHTML='';
+      const ib=document.createElement('div');ib.className='info-box';ib.textContent=info;
+      document.getElementById('dlArea').innerHTML='';document.getElementById('dlArea').appendChild(ib);
+      document.getElementById('resBox').classList.add('show');
+      showToast(T[lang].done,'ok');return;
+    }
+    if(curTool==='pdf-to-img'){
+      if(!pdfDoc){hideLoader();showToast('Load a PDF file first','err');return}
+      const mime=document.getElementById('of')?.value||'image/jpeg';
+      const ext=mime==='image/png'?'png':'jpg';
+      const files=[];
+      for(let i=1;i<=pdfDoc.numPages;i++){
+        const page=await pdfDoc.getPage(i);
+        const vp=page.getViewport({scale:2});
+        const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+        await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+        const blob=await new Promise(res=>c.toBlob(res,mime,.92));
+        files.push({blob,name:`converthub_page${i}.${ext}`});
+      }
+      hideLoader();finalize(files,'pdf');return;
+    }
+    if(curTool==='img-to-pdf'){
+      if(!curFile||!img.src){hideLoader();showToast('Load an image first','err');return}
+      const {PDFDocument,rgb}=PDFLib;
+      const pdfLibDoc=await PDFDocument.create();
+      const sz=document.getElementById('pgsz')?.value||'a4';
+      let pw,ph;
+      if(sz==='a4'){pw=595;ph=842}else if(sz==='letter'){pw=612;ph=792}else{pw=img.width;ph=img.height}
+      const page=pdfLibDoc.addPage([pw,ph]);
+      const jpegBytes=await fetch(img.src).then(r=>r.arrayBuffer()).catch(async()=>{
+        const c=document.createElement('canvas');c.width=img.width;c.height=img.height;c.getContext('2d').drawImage(img,0,0);
+        const b64=c.toDataURL('image/jpeg',.92).split(',')[1];return Uint8Array.from(atob(b64),c=>c.charCodeAt(0)).buffer;
+      });
+      let pdfImg;try{pdfImg=await pdfLibDoc.embedJpg(jpegBytes)}catch(e){const c=document.createElement('canvas');c.width=img.width;c.height=img.height;c.getContext('2d').drawImage(img,0,0);const b64=c.toDataURL('image/jpeg',.92).split(',')[1];const bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));pdfImg=await pdfLibDoc.embedJpg(bytes)}
+      const scaled=pdfImg.scaleToFit(pw-40,ph-40);
+      page.drawImage(pdfImg,{x:(pw-scaled.width)/2,y:(ph-scaled.height)/2,width:scaled.width,height:scaled.height});
+      const bytes=await pdfLibDoc.save();
+      const blob=new Blob([bytes],{type:'application/pdf'});
+      hideLoader();finalize([{blob,name:`converthub_image_to_pdf_${Date.now()}.pdf`}],'pdf');return;
+    }
+    if(curTool==='pdf-compress'){
+      if(!pdfDoc||!curFile){hideLoader();showToast('Load a PDF file first','err');return}
+      const {PDFDocument}=PDFLib;
+      const ab=await curFile.arrayBuffer();
+      const pdfLibDoc=await PDFDocument.load(ab,{ignoreEncryption:true});
+      const q=(document.getElementById('q')?.value||75)/100;
+      // Re-render pages at reduced quality
+      const newDoc=await PDFDocument.create();
+      for(let i=1;i<=pdfDoc.numPages;i++){
+        const page=await pdfDoc.getPage(i);
+        const vp=page.getViewport({scale:q*1.5+0.5});
+        const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+        await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+        const blob=await new Promise(res=>c.toBlob(res,'image/jpeg',q));
+        const ab2=await blob.arrayBuffer();
+        const jpegImg=await newDoc.embedJpg(ab2);
+        const [w2,h2]=[vp.width,vp.height];
+        const newPage=newDoc.addPage([w2,h2]);
+        newPage.drawImage(jpegImg,{x:0,y:0,width:w2,height:h2});
+      }
+      const bytes=await newDoc.save();
+      const outBlob=new Blob([bytes],{type:'application/pdf'});
+      hideLoader();finalize([{blob:outBlob,name:`converthub_compressed_${Date.now()}.pdf`}],'pdf');return;
+    }
+    if(curTool==='pdf-rotate'){
+      if(!curFile){hideLoader();showToast('Load a PDF file first','err');return}
+      const {PDFDocument,degrees}=PDFLib;
+      const ab=await curFile.arrayBuffer();
+      const pdfLibDoc=await PDFDocument.load(ab,{ignoreEncryption:true});
+      const deg=parseInt(document.getElementById('pra')?.value||90);
+      pdfLibDoc.getPages().forEach(p=>p.setRotation(degrees(deg)));
+      const bytes=await pdfLibDoc.save();
+      const blob=new Blob([bytes],{type:'application/pdf'});
+      hideLoader();finalize([{blob,name:`converthub_rotated_${Date.now()}.pdf`}],'pdf');return;
+    }
+  }catch(e){hideLoader();showToast(T[lang].err+' '+e.message,'err')}
+}
+
+function applyVidTool(){
+  if(!curFile){document.getElementById('fi').click();return}
+  const videoEl=document.querySelector('#prevBox video');
+  showLoader(T[lang].processing);
+  if(curTool==='vid-info'){
+    const info=`🎬 File: ${curFile.name}\n📦 Size: ${fmtSz(curFile.size)}\n📋 Type: ${curFile.type||'video/*'}\n📅 Last modified: ${new Date(curFile.lastModified).toLocaleDateString()}\n⏱️ Load video to see duration`;
+    hideLoader();
+    document.getElementById('resBadge').textContent='ℹ️ Video Info';
+    document.getElementById('resInfo').innerHTML='';
+    const ib=document.createElement('div');ib.className='info-box';ib.textContent=info;
+    document.getElementById('dlArea').innerHTML='';document.getElementById('dlArea').appendChild(ib);
+    document.getElementById('resBox').classList.add('show');
+    showToast(T[lang].done,'ok');return;
+  }
+  if(!videoEl){hideLoader();showToast('Load a video first','err');return}
+  const t=parseFloat(document.getElementById('vft')?.value||0);
+  if(curTool==='vid-snapshot'){
+    videoEl.currentTime=t;
+    videoEl.onseeked=async()=>{
+      const c=document.createElement('canvas');c.width=videoEl.videoWidth||640;c.height=videoEl.videoHeight||360;
+      c.getContext('2d').drawImage(videoEl,0,0);
+      const blob=await new Promise(res=>c.toBlob(res,'image/jpeg',.92));
+      hideLoader();finalize([{blob,name:`converthub_frame_${t}s_${Date.now()}.jpg`}],'vid');
+    };
+  } else if(curTool==='vid-thumb'){
+    // Extract 4 frames
+    const times=[0,t,t*2,t*3].map(x=>Math.min(x,videoEl.duration||10));
+    let idx=0;const files=[];
+    function captureNext(){
+      if(idx>=times.length){hideLoader();finalize(files,'vid');return}
+      videoEl.currentTime=times[idx];
+      videoEl.onseeked=()=>{
+        const c=document.createElement('canvas');c.width=videoEl.videoWidth||640;c.height=videoEl.videoHeight||360;
+        c.getContext('2d').drawImage(videoEl,0,0);
+        c.toBlob(blob=>{files.push({blob,name:`converthub_frame_${idx+1}_${Date.now()}.jpg`});idx++;captureNext()},'image/jpeg',.92);
+      };
+    }
+    captureNext();
+  }
+}
+
+function finalize(files,cat){
+  const l=T[lang];const ci=catIcons[cat];
+  const totalSize=files.reduce((s,f)=>s+(f.blob?.size||0),0);
+  const sv=Math.round((1-totalSize/origSize)*100);
+  document.getElementById('resBadge').textContent=sv>0?`✅ ${l.saved}: ${sv}%`:`📦 ${fmtSz(totalSize)}`;
+  document.getElementById('resInfo').textContent=files.length>1?`${files.length} files ready · Total: ${fmtSz(totalSize)}`:`${l.orig}: ${fmtSz(origSize)} → ${l.result}: ${fmtSz(totalSize)}`;
+  const area=document.getElementById('dlArea');area.innerHTML='';
+  files.forEach((f,i)=>{
+    if(!f.blob)return;
+    const url=URL.createObjectURL(f.blob);
+    const a=document.createElement('a');a.href=url;a.download=f.name;a.className=`bdl ${ci.dl}`;
+    a.innerHTML=`⬇ ${files.length>1?`${l.pg||'Page'} ${i+1}`:l.dlb}`;
+    area.appendChild(a);
+  });
+  document.getElementById('resBox').classList.add('show');
+  hideProg();showToast(l.done,'ok');
+}
+
+function fmtSz(b){if(!b)return'0 B';if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(2)+' MB'}
+function showProg(cat){const pw=document.getElementById('pw'),pb=document.getElementById('pb');pw.style.display='block';pb.style.width='0';let p=0;pw._iv=setInterval(()=>{p+=Math.random()*22;if(p>88)p=88;pb.style.width=p+'%'},130)}
+function hideProg(){const pw=document.getElementById('pw'),pb=document.getElementById('pb');if(!pw)return;clearInterval(pw._iv);pb.style.width='100%';setTimeout(()=>{pw.style.display='none';pb.style.width='0'},500)}
+function showLoader(msg){const o=document.getElementById('loadOverlay');o.querySelector('#loadMsg').textContent=msg||'Processing...';o.classList.add('show')}
+function hideLoader(){document.getElementById('loadOverlay').classList.remove('show');hideProg()}
+function showToast(msg,type='ok'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type} show`;setTimeout(()=>t.classList.remove('show'),3200)}
+
+setLang('en');
+</script>
+</body>
+</html>
