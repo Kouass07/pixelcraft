@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PixelCraft – Free Online Image Tools | Compress, Convert, Resize</title>
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="Free online image tools. Compress, convert, resize, crop and rotate your images instantly. No upload, no registration, 100% free. Works on all devices.">
+<meta name="keywords" content="compress image, convert image, resize image, image tools, free image editor, compress jpg, convert png to jpg, image compressor online, réduire taille image, convertir image, redimensionner image">
+<meta name="author" content="PixelCraft">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pixelcraft-sage.vercel.app/">
+
+<!-- Open Graph (Facebook, WhatsApp) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pixelcraft-sage.vercel.app/">
+<meta property="og:title" content="PixelCraft – Free Online Image Tools">
+<meta property="og:description" content="Compress, convert, resize your images instantly. No upload, no registration, 100% free.">
+<meta property="og:image" content="https://pixelcraft-sage.vercel.app/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PixelCraft – Free Online Image Tools">
+<meta name="twitter:description" content="Compress, convert, resize your images instantly. 100% free, no upload.">
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5331834787008859" crossorigin="anonymous"></script>
+
+<!-- Hreflang (bilingual) -->
+<link rel="alternate" hreflang="en" href="https://pixelcraft-sage.vercel.app/">
+<link rel="alternate" hreflang="fr" href="https://pixelcraft-sage.vercel.app/">
+<link rel="alternate" hreflang="x-default" href="https://pixelcraft-sage.vercel.app/">
+
+<!-- Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PixelCraft",
+  "url": "https://pixelcraft-sage.vercel.app/",
+  "description": "Free online image tools. Compress, convert, resize, crop and rotate images instantly.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --card: #1a1a24;
+    --border: rgba(255,255,255,0.07);
+    --accent1: #6c63ff;
+    --accent2: #ff6584;
+    --accent3: #43e6b5;
+    --accent4: #ffd166;
+    --text: #f0f0f8;
+    --text-muted: rgba(240,240,248,0.5);
+    --glow1: rgba(108,99,255,0.3);
+    --glow2: rgba(255,101,132,0.2);
+    --glow3: rgba(67,230,181,0.2);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND ── */
+  .bg-canvas {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+  .orb {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.25;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+  .orb-1 { width: 500px; height: 500px; background: var(--accent1); top: -150px; left: -150px; animation-delay: 0s; }
+  .orb-2 { width: 400px; height: 400px; background: var(--accent2); top: 30%; right: -100px; animation-delay: -4s; }
+  .orb-3 { width: 350px; height: 350px; background: var(--accent3); bottom: -100px; left: 30%; animation-delay: -8s; }
+  @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px, 20px) scale(1.08); } }
+
+  /* ── LAYOUT ── */
+  .container { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(10,10,15,0.7);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+  }
+  .nav-inner {
+    max-width: 960px; margin: 0 auto; padding: 0 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem;
+    background: linear-gradient(135deg, var(--accent1), var(--accent3));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .logo span { -webkit-text-fill-color: var(--accent2); }
+  .lang-toggle {
+    display: flex; gap: 6px; background: var(--surface); border-radius: 50px;
+    padding: 4px; border: 1px solid var(--border);
+  }
+  .lang-btn {
+    padding: 6px 16px; border-radius: 50px; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.85rem;
+    transition: all 0.25s;
+    background: transparent; color: var(--text-muted);
+  }
+  .lang-btn.active {
+    background: linear-gradient(135deg, var(--accent1), #8b83ff);
+    color: #fff; box-shadow: 0 4px 15px rgba(108,99,255,0.4);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center; padding: 80px 0 60px;
+    animation: fadeUp 0.8s ease both;
+  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(108,99,255,0.15); border: 1px solid rgba(108,99,255,0.3);
+    border-radius: 50px; padding: 6px 18px; margin-bottom: 28px;
+    font-size: 0.82rem; color: #a89dff; font-weight: 500;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero-badge::before { content: "✦"; font-size: 0.7rem; }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2.4rem, 7vw, 4rem);
+    line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero h1 .line2 {
+    background: linear-gradient(135deg, var(--accent1), var(--accent2), var(--accent3));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-size: 200%; animation: gradientShift 4s ease infinite alternate;
+  }
+  @keyframes gradientShift { from { background-position: 0%; } to { background-position: 100%; } }
+
+  .hero p {
+    font-size: 1.05rem; color: var(--text-muted); max-width: 520px;
+    margin: 0 auto 40px; line-height: 1.7;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-stats {
+    display: flex; justify-content: center; gap: 40px;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.6rem;
+    background: linear-gradient(135deg, var(--accent3), var(--accent1));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── DROP ZONE ── */
+  .upload-zone {
+    margin: 50px 0 40px;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+  .drop-area {
+    border: 2px dashed rgba(108,99,255,0.4); border-radius: var(--radius);
+    padding: 60px 40px; text-align: center; cursor: pointer;
+    background: rgba(108,99,255,0.04);
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .drop-area:hover, .drop-area.drag-over {
+    border-color: var(--accent1);
+    background: rgba(108,99,255,0.1);
+    transform: scale(1.01);
+    box-shadow: 0 0 40px rgba(108,99,255,0.2), inset 0 0 30px rgba(108,99,255,0.05);
+  }
+  .drop-area input { display: none; }
+
+  .drop-icon {
+    width: 80px; height: 80px; margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    border-radius: 24px; display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; box-shadow: 0 15px 35px rgba(108,99,255,0.4);
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  .drop-title {
+    font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;
+  }
+  .drop-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+  .drop-btn {
+    display: inline-block; padding: 12px 32px;
+    background: linear-gradient(135deg, var(--accent1), #8b83ff);
+    color: #fff; border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+    box-shadow: 0 8px 25px rgba(108,99,255,0.4); transition: all 0.3s;
+    border: none; cursor: pointer;
+  }
+  .drop-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(108,99,255,0.5); }
+  .drop-formats {
+    margin-top: 16px; font-size: 0.78rem; color: var(--text-muted);
+  }
+  .format-tag {
+    display: inline-block; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 2px 8px; margin: 3px;
+    font-size: 0.75rem; color: var(--text-muted);
+  }
+
+  /* ── TOOLS GRID ── */
+  .section-title {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.6rem;
+    margin-bottom: 8px; letter-spacing: -0.5px;
+  }
+  .section-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; }
+
+  .tools-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px; margin-bottom: 60px;
+  }
+  .tool-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px 20px; cursor: pointer;
+    transition: all 0.3s; position: relative; overflow: hidden;
+    animation: fadeUp 0.6s ease both;
+  }
+  .tool-card::before {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .tool-card:nth-child(1)::before { background: radial-gradient(circle at top left, rgba(108,99,255,0.15), transparent 70%); }
+  .tool-card:nth-child(2)::before { background: radial-gradient(circle at top left, rgba(255,101,132,0.15), transparent 70%); }
+  .tool-card:nth-child(3)::before { background: radial-gradient(circle at top left, rgba(67,230,181,0.15), transparent 70%); }
+  .tool-card:nth-child(4)::before { background: radial-gradient(circle at top left, rgba(255,209,102,0.15), transparent 70%); }
+  .tool-card:nth-child(5)::before { background: radial-gradient(circle at top left, rgba(108,99,255,0.15), transparent 70%); }
+  .tool-card:nth-child(6)::before { background: radial-gradient(circle at top left, rgba(67,230,181,0.15), transparent 70%); }
+  .tool-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .tool-card:hover::before { opacity: 1; }
+  .tool-card.active { border-color: var(--accent1); box-shadow: 0 0 30px rgba(108,99,255,0.2); }
+
+  .tool-icon {
+    width: 48px; height: 48px; border-radius: 14px; display: flex;
+    align-items: center; justify-content: center; font-size: 1.4rem;
+    margin-bottom: 14px;
+  }
+  .icon-purple { background: linear-gradient(135deg, #6c63ff22, #6c63ff44); }
+  .icon-pink   { background: linear-gradient(135deg, #ff658422, #ff658444); }
+  .icon-green  { background: linear-gradient(135deg, #43e6b522, #43e6b544); }
+  .icon-yellow { background: linear-gradient(135deg, #ffd16622, #ffd16644); }
+
+  .tool-name {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 6px;
+  }
+  .tool-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* ── WORKSPACE ── */
+  #workspace { display: none; }
+  .workspace-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 30px; margin-bottom: 30px;
+    animation: fadeUp 0.4s ease both;
+  }
+  .workspace-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+  }
+  .workspace-icon {
+    width: 52px; height: 52px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    box-shadow: 0 8px 20px rgba(108,99,255,0.3);
+  }
+  .workspace-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; }
+  .workspace-sub { color: var(--text-muted); font-size: 0.82rem; margin-top: 2px; }
+
+  /* preview */
+  .preview-box {
+    background: var(--surface); border-radius: var(--radius-sm);
+    border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px;
+    min-height: 200px; display: flex; align-items: center; justify-content: center;
+  }
+  .preview-box img { max-width: 100%; max-height: 320px; object-fit: contain; display: block; }
+
+  /* controls */
+  .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .ctrl-group label {
+    display: block; font-size: 0.78rem; color: var(--text-muted);
+    margin-bottom: 6px; font-weight: 500;
+  }
+  .ctrl-group input[type=range] {
+    width: 100%; accent-color: var(--accent1); cursor: pointer;
+  }
+  .ctrl-group select, .ctrl-group input[type=number] {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); border-radius: var(--radius-sm); padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; outline: none;
+    transition: border-color 0.2s;
+  }
+  .ctrl-group select:focus, .ctrl-group input:focus { border-color: var(--accent1); }
+
+  .range-val {
+    font-family: 'Syne', sans-serif; font-weight: 700; color: var(--accent1);
+    font-size: 0.9rem; float: right;
+  }
+
+  /* action btns */
+  .action-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    flex: 1; min-width: 140px; padding: 14px 28px; border: none; cursor: pointer;
+    background: linear-gradient(135deg, var(--accent1), #8b83ff);
+    color: #fff; border-radius: 50px; font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    box-shadow: 0 8px 25px rgba(108,99,255,0.4); transition: all 0.3s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(108,99,255,0.5); }
+  .btn-secondary {
+    padding: 14px 24px; border: 1px solid var(--border); cursor: pointer;
+    background: var(--surface); color: var(--text); border-radius: 50px;
+    font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+  .btn-secondary:hover { border-color: var(--accent1); color: var(--accent1); }
+
+  /* result */
+  .result-box {
+    display: none; background: rgba(67,230,181,0.08);
+    border: 1px solid rgba(67,230,181,0.3); border-radius: var(--radius-sm);
+    padding: 20px; text-align: center; margin-top: 16px;
+  }
+  .result-box.show { display: block; animation: fadeUp 0.4s ease both; }
+  .result-info {
+    font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;
+  }
+  .savings-badge {
+    display: inline-block; background: rgba(67,230,181,0.15);
+    border: 1px solid rgba(67,230,181,0.4); border-radius: 50px;
+    padding: 4px 16px; font-size: 0.8rem; color: var(--accent3);
+    font-weight: 600; margin-bottom: 14px;
+  }
+  .btn-download {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 30px; background: linear-gradient(135deg, var(--accent3), #2bd6a2);
+    color: #0a0a0f; border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+    text-decoration: none; transition: all 0.3s; border: none; cursor: pointer;
+  }
+  .btn-download:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(67,230,181,0.4); }
+
+  /* progress */
+  .progress-wrap { height: 6px; background: var(--surface); border-radius: 50px; overflow: hidden; margin: 12px 0; }
+  .progress-bar { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--accent1), var(--accent3)); width: 0; transition: width 0.4s; }
+
+  /* ── HOW IT WORKS ── */
+  .how-section { padding: 40px 0 60px; }
+  .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .step-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px 22px; text-align: center; position: relative;
+  }
+  .step-num {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3rem;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1; margin-bottom: 12px;
+  }
+  .step-title { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 8px; }
+  .step-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 0; text-align: center;
+    color: var(--text-muted); font-size: 0.8rem;
+  }
+  footer a { color: var(--accent1); text-decoration: none; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 22px;
+    font-size: 0.88rem; box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    opacity: 0; transform: translateY(20px); transition: all 0.3s;
+    pointer-events: none; max-width: 300px;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { border-color: rgba(67,230,181,0.4); }
+  .toast.error   { border-color: rgba(255,101,132,0.4); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero { padding: 50px 0 40px; }
+    .hero-stats { gap: 24px; }
+    .tools-grid { grid-template-columns: 1fr 1fr; }
+    .controls-grid { grid-template-columns: 1fr; }
+    .steps-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-canvas">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Pixel<span>Craft</span></div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+      <button class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="container">
+  <div class="hero">
+    <div class="hero-badge" data-i="badge">✦ 100% Gratuit · Aucune inscription</div>
+    <h1>
+      <span data-i="h1a">Transformez vos images</span><br>
+      <span class="line2" data-i="h1b">en quelques secondes</span>
+    </h1>
+    <p data-i="hero-desc">Compressez, convertissez, redimensionnez vos images instantanément. Aucun fichier envoyé sur un serveur — tout se passe sur votre appareil.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label" data-i="stat1">Gratuit</div></div>
+      <div class="stat"><div class="stat-num">0s</div><div class="stat-label" data-i="stat2">Upload serveur</div></div>
+      <div class="stat"><div class="stat-num">∞</div><div class="stat-label" data-i="stat3">Images traitées</div></div>
+    </div>
+  </div>
+
+  <!-- UPLOAD ZONE -->
+  <div class="upload-zone">
+    <div class="drop-area" id="dropArea" onclick="document.getElementById('fileInput').click()">
+      <input type="file" id="fileInput" accept="image/*" onchange="handleFile(this.files[0])">
+      <div class="drop-icon">🖼️</div>
+      <div class="drop-title" data-i="drop-title">Glissez votre image ici</div>
+      <div class="drop-sub" data-i="drop-sub">ou cliquez pour choisir un fichier</div>
+      <button class="drop-btn" data-i="drop-btn">Choisir une image</button>
+      <div class="drop-formats">
+        <span class="format-tag">JPG</span>
+        <span class="format-tag">PNG</span>
+        <span class="format-tag">WebP</span>
+        <span class="format-tag">GIF</span>
+        <span class="format-tag">BMP</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLS GRID -->
+  <div id="toolsSection">
+    <div class="section-title" data-i="tools-title">Choisissez votre outil</div>
+    <div class="section-sub" data-i="tools-sub">Sélectionnez un outil, chargez votre image et téléchargez le résultat</div>
+    <div class="tools-grid">
+      <div class="tool-card" onclick="selectTool('compress')" id="tool-compress">
+        <div class="tool-icon icon-purple">⚡</div>
+        <div class="tool-name" data-i="t1-name">Compresser</div>
+        <div class="tool-desc" data-i="t1-desc">Réduisez la taille de vos images sans perdre en qualité visible</div>
+      </div>
+      <div class="tool-card" onclick="selectTool('convert')" id="tool-convert">
+        <div class="tool-icon icon-pink">🔄</div>
+        <div class="tool-name" data-i="t2-name">Convertir</div>
+        <div class="tool-desc" data-i="t2-desc">JPG, PNG, WebP — changez de format en un clic</div>
+      </div>
+      <div class="tool-card" onclick="selectTool('resize')" id="tool-resize">
+        <div class="tool-icon icon-green">📐</div>
+        <div class="tool-name" data-i="t3-name">Redimensionner</div>
+        <div class="tool-desc" data-i="t3-desc">Définissez la largeur et hauteur exactes dont vous avez besoin</div>
+      </div>
+      <div class="tool-card" onclick="selectTool('crop')" id="tool-crop">
+        <div class="tool-icon icon-yellow">✂️</div>
+        <div class="tool-name" data-i="t4-name">Rogner</div>
+        <div class="tool-desc" data-i="t4-desc">Cadrez votre image au ratio parfait</div>
+      </div>
+      <div class="tool-card" onclick="selectTool('grayscale')" id="tool-grayscale">
+        <div class="tool-icon icon-purple">🎨</div>
+        <div class="tool-name" data-i="t5-name">Noir & Blanc</div>
+        <div class="tool-desc" data-i="t5-desc">Convertissez en niveaux de gris avec style</div>
+      </div>
+      <div class="tool-card" onclick="selectTool('rotate')" id="tool-rotate">
+        <div class="tool-icon icon-green">🔃</div>
+        <div class="tool-name" data-i="t6-name">Rotation</div>
+        <div class="tool-desc" data-i="t6-desc">Faites pivoter votre image à l'angle souhaité</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div id="workspace">
+    <div class="workspace-card">
+      <div class="workspace-header">
+        <div class="workspace-icon" id="ws-icon">⚡</div>
+        <div>
+          <div class="workspace-title" id="ws-title">Compresser</div>
+          <div class="workspace-sub" id="ws-sub">Ajustez les paramètres puis cliquez sur Appliquer</div>
+        </div>
+      </div>
+
+      <!-- preview -->
+      <div class="preview-box" id="previewBox">
+        <span style="color:var(--text-muted);font-size:0.85rem" data-i="no-img">Chargez une image pour commencer</span>
+      </div>
+
+      <!-- dynamic controls -->
+      <div id="toolControls"></div>
+
+      <div class="action-row">
+        <button class="btn-primary" onclick="applyTool()" data-i="apply-btn">⚡ Appliquer</button>
+        <button class="btn-secondary" onclick="resetTool()" data-i="reset-btn">Réinitialiser</button>
+        <button class="btn-secondary" onclick="closeWorkspace()" data-i="back-btn">← Retour</button>
+      </div>
+
+      <div class="progress-wrap" id="progressWrap" style="display:none">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="result-box" id="resultBox">
+        <div class="savings-badge" id="savingsBadge"></div>
+        <div class="result-info" id="resultInfo"></div>
+        <a id="downloadLink" class="btn-download">⬇ <span data-i="dl-btn">Télécharger</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
+    <div class="section-title" data-i="how-title">Comment ça marche ?</div>
+    <div class="section-sub" data-i="how-sub">Simple, rapide, privé</div>
+    <div class="steps-row">
+      <div class="step-card"><div class="step-num">01</div><div class="step-title" data-i="s1-title">Choisissez un outil</div><div class="step-desc" data-i="s1-desc">Compresser, convertir, redimensionner… choisissez ce dont vous avez besoin</div></div>
+      <div class="step-card"><div class="step-num">02</div><div class="step-title" data-i="s2-title">Chargez votre image</div><div class="step-desc" data-i="s2-desc">Glissez-déposez ou cliquez pour sélectionner votre fichier. Aucun upload.</div></div>
+      <div class="step-card"><div class="step-num">03</div><div class="step-title" data-i="s3-title">Téléchargez</div><div class="step-desc" data-i="s3-desc">Votre image transformée est prête. Cliquez sur Télécharger et c'est fait !</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <strong>PixelCraft</strong> — <span data-i="footer-txt">Tous droits réservés · Vos images restent sur votre appareil</span></p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── TRANSLATIONS ───────────────────────────────────────
+const T = {
+  fr: {
+    badge: '✦ 100% Gratuit · Aucune inscription',
+    h1a: 'Transformez vos images', h1b: 'en quelques secondes',
+    'hero-desc': 'Compressez, convertissez, redimensionnez vos images instantanément. Aucun fichier envoyé sur un serveur — tout se passe sur votre appareil.',
+    stat1:'Gratuit', stat2:'Upload serveur', stat3:'Images traitées',
+    'drop-title':'Glissez votre image ici','drop-sub':'ou cliquez pour choisir un fichier','drop-btn':'Choisir une image',
+    'tools-title':'Choisissez votre outil','tools-sub':'Sélectionnez un outil, chargez votre image et téléchargez le résultat',
+    't1-name':'Compresser','t1-desc':'Réduisez la taille de vos images sans perdre en qualité visible',
+    't2-name':'Convertir','t2-desc':'JPG, PNG, WebP — changez de format en un clic',
+    't3-name':'Redimensionner','t3-desc':'Définissez la largeur et hauteur exactes dont vous avez besoin',
+    't4-name':'Rogner','t4-desc':'Cadrez votre image au ratio parfait',
+    't5-name':'Noir & Blanc','t5-desc':'Convertissez en niveaux de gris avec style',
+    't6-name':'Rotation','t6-desc':'Faites pivoter votre image à l\'angle souhaité',
+    'no-img':'Chargez une image pour commencer',
+    'apply-btn':'⚡ Appliquer','reset-btn':'Réinitialiser','back-btn':'← Retour',
+    'dl-btn':'Télécharger',
+    'how-title':'Comment ça marche ?','how-sub':'Simple, rapide, privé',
+    's1-title':'Choisissez un outil','s1-desc':'Compresser, convertir, redimensionner… choisissez ce dont vous avez besoin',
+    's2-title':'Chargez votre image','s2-desc':'Glissez-déposez ou cliquez pour sélectionner votre fichier. Aucun upload.',
+    's3-title':'Téléchargez','s3-desc':'Votre image transformée est prête. Cliquez sur Télécharger et c\'est fait !',
+    'footer-txt':'Tous droits réservés · Vos images restent sur votre appareil',
+    'ws-sub':'Ajustez les paramètres puis cliquez sur Appliquer',
+    tools: {
+      compress: { name:'Compresser', icon:'⚡' },
+      convert:  { name:'Convertir', icon:'🔄' },
+      resize:   { name:'Redimensionner', icon:'📐' },
+      crop:     { name:'Rogner', icon:'✂️' },
+      grayscale:{ name:'Noir & Blanc', icon:'🎨' },
+      rotate:   { name:'Rotation', icon:'🔃' }
+    },
+    quality:'Qualité', format:'Format de sortie', width:'Largeur (px)', height:'Hauteur (px)',
+    ratio:'Conserver le ratio', angle:'Angle de rotation',
+    saved:'Économie réalisée','original':'Fichier original','result':'Résultat',
+    processing:'Traitement en cours…', done:'Image traitée avec succès !'
+  },
+  en: {
+    badge: '✦ 100% Free · No sign-up needed',
+    h1a: 'Transform your images', h1b: 'in seconds',
+    'hero-desc': 'Compress, convert, resize your images instantly. No file sent to any server — everything happens on your device.',
+    stat1:'Free', stat2:'Server upload', stat3:'Images processed',
+    'drop-title':'Drop your image here','drop-sub':'or click to choose a file','drop-btn':'Choose an image',
+    'tools-title':'Choose your tool','tools-sub':'Select a tool, load your image and download the result',
+    't1-name':'Compress','t1-desc':'Reduce image file size without visible quality loss',
+    't2-name':'Convert','t2-desc':'JPG, PNG, WebP — change format in one click',
+    't3-name':'Resize','t3-desc':'Set the exact width and height you need',
+    't4-name':'Crop','t4-desc':'Frame your image to the perfect ratio',
+    't5-name':'Grayscale','t5-desc':'Convert to black & white with style',
+    't6-name':'Rotate','t6-desc':'Rotate your image to any angle',
+    'no-img':'Load an image to get started',
+    'apply-btn':'⚡ Apply','reset-btn':'Reset','back-btn':'← Back',
+    'dl-btn':'Download',
+    'how-title':'How does it work?','how-sub':'Simple, fast, private',
+    's1-title':'Choose a tool','s1-desc':'Compress, convert, resize… pick what you need',
+    's2-title':'Load your image','s2-desc':'Drag & drop or click to select your file. No upload.',
+    's3-title':'Download','s3-desc':'Your transformed image is ready. Click Download and you\'re done!',
+    'footer-txt':'All rights reserved · Your images stay on your device',
+    'ws-sub':'Adjust settings then click Apply',
+    tools: {
+      compress: { name:'Compress', icon:'⚡' },
+      convert:  { name:'Convert', icon:'🔄' },
+      resize:   { name:'Resize', icon:'📐' },
+      crop:     { name:'Crop', icon:'✂️' },
+      grayscale:{ name:'Grayscale', icon:'🎨' },
+      rotate:   { name:'Rotate', icon:'🔃' }
+    },
+    quality:'Quality', format:'Output format', width:'Width (px)', height:'Height (px)',
+    ratio:'Keep ratio', angle:'Rotation angle',
+    saved:'Savings achieved','original':'Original file','result':'Result',
+    processing:'Processing…', done:'Image processed successfully!'
+  }
+};
+
+let lang = 'en';
+document.addEventListener('DOMContentLoaded', () => setLang('en'));
+let currentTool = null;
+let currentFile = null;
+let originalSize = 0;
+let img = new Image();
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('[data-i]').forEach(el => {
+    const key = el.getAttribute('data-i');
+    if (T[l][key]) el.textContent = T[l][key];
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${l}')"]`).classList.add('active');
+  document.documentElement.lang = l;
+  if (currentTool) renderControls(currentTool);
+}
+
+// ─── DRAG & DROP ────────────────────────────────────────
+const dropArea = document.getElementById('dropArea');
+dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('drag-over'); });
+dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
+dropArea.addEventListener('drop', e => { e.preventDefault(); dropArea.classList.remove('drag-over'); if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+
+function handleFile(file) {
+  if (!file || !file.type.startsWith('image/')) { showToast('❌ Fichier non supporté', 'error'); return; }
+  currentFile = file;
+  originalSize = file.size;
+  const reader = new FileReader();
+  reader.onload = e => {
+    img.src = e.target.result;
+    img.onload = () => updatePreview();
+  };
+  reader.readAsDataURL(file);
+  if (currentTool) showWorkspace();
+}
+
+function updatePreview() {
+  const box = document.getElementById('previewBox');
+  box.innerHTML = `<img src="${img.src}" alt="preview">`;
+}
+
+// ─── TOOLS ──────────────────────────────────────────────
+function selectTool(tool) {
+  currentTool = tool;
+  document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('tool-'+tool).classList.add('active');
+  showWorkspace();
+}
+
+function showWorkspace() {
+  if (!currentTool) return;
+  const t = T[lang].tools[currentTool];
+  document.getElementById('ws-icon').textContent = t.icon;
+  document.getElementById('ws-title').textContent = t.name;
+  document.getElementById('ws-sub').textContent = T[lang]['ws-sub'];
+  document.getElementById('workspace').style.display = 'block';
+  document.getElementById('resultBox').classList.remove('show');
+  renderControls(currentTool);
+  if (currentFile) updatePreview();
+  document.getElementById('workspace').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function closeWorkspace() {
+  document.getElementById('workspace').style.display = 'none';
+  document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
+  currentTool = null;
+}
+
+function resetTool() {
+  document.getElementById('resultBox').classList.remove('show');
+  renderControls(currentTool);
+  if (currentFile) updatePreview();
+}
+
+function renderControls(tool) {
+  const c = document.getElementById('toolControls');
+  const l = T[lang];
+  let html = '<div class="controls-grid">';
+  if (tool === 'compress') {
+    html += `<div class="ctrl-group" style="grid-column:1/-1">
+      <label>${l.quality} <span class="range-val" id="qVal">80%</span></label>
+      <input type="range" id="quality" min="1" max="100" value="80" oninput="document.getElementById('qVal').textContent=this.value+'%'">
+    </div>`;
+  } else if (tool === 'convert') {
+    html += `<div class="ctrl-group" style="grid-column:1/-1">
+      <label>${l.format}</label>
+      <select id="outFormat">
+        <option value="image/jpeg">JPG</option>
+        <option value="image/png">PNG</option>
+        <option value="image/webp">WebP</option>
+      </select>
+    </div>`;
+  } else if (tool === 'resize') {
+    html += `
+      <div class="ctrl-group"><label>${l.width}</label><input type="number" id="rw" value="${img.width||800}" min="1"></div>
+      <div class="ctrl-group"><label>${l.height}</label><input type="number" id="rh" value="${img.height||600}" min="1"></div>
+      <div class="ctrl-group" style="grid-column:1/-1">
+        <label><input type="checkbox" id="keepRatio" checked> ${l.ratio}</label>
+      </div>`;
+  } else if (tool === 'crop') {
+    html += `
+      <div class="ctrl-group">
+        <label>${l.format}</label>
+        <select id="cropRatio">
+          <option value="1:1">1:1 (Carré)</option>
+          <option value="4:3">4:3</option>
+          <option value="16:9">16:9</option>
+          <option value="3:2">3:2</option>
+          <option value="free">Libre</option>
+        </select>
+      </div>`;
+  } else if (tool === 'grayscale') {
+    html += `<div class="ctrl-group" style="grid-column:1/-1">
+      <label>Intensité <span class="range-val" id="gsVal">100%</span></label>
+      <input type="range" id="gsIntensity" min="0" max="100" value="100" oninput="document.getElementById('gsVal').textContent=this.value+'%'">
+    </div>`;
+  } else if (tool === 'rotate') {
+    html += `<div class="ctrl-group" style="grid-column:1/-1">
+      <label>${l.angle} <span class="range-val" id="rotVal">90°</span></label>
+      <input type="range" id="rotAngle" min="0" max="360" value="90" step="90" oninput="document.getElementById('rotVal').textContent=this.value+'°'">
+    </div>`;
+  }
+  html += '</div>';
+  c.innerHTML = html;
+
+  // keep ratio logic
+  if (tool === 'resize') {
+    const rw = document.getElementById('rw');
+    const rh = document.getElementById('rh');
+    rw.addEventListener('input', () => {
+      if (document.getElementById('keepRatio').checked && img.width) {
+        rh.value = Math.round(rw.value * img.height / img.width);
+      }
+    });
+    rh.addEventListener('input', () => {
+      if (document.getElementById('keepRatio').checked && img.height) {
+        rw.value = Math.round(rh.value * img.width / img.height);
+      }
+    });
+  }
+}
+
+// ─── APPLY ──────────────────────────────────────────────
+function applyTool() {
+  if (!currentFile) {
+    document.getElementById('fileInput').click(); return;
+  }
+  showProgress();
+  setTimeout(() => {
+    try {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      let w = img.width, h = img.height;
+      let mimeOut = 'image/jpeg';
+      let quality = 0.8;
+      let ext = 'jpg';
+
+      if (currentTool === 'compress') {
+        quality = (document.getElementById('quality')?.value || 80) / 100;
+        canvas.width = w; canvas.height = h;
+        ctx.drawImage(img, 0, 0);
+        mimeOut = currentFile.type.includes('png') ? 'image/png' : 'image/jpeg';
+        ext = mimeOut === 'image/png' ? 'png' : 'jpg';
+
+      } else if (currentTool === 'convert') {
+        mimeOut = document.getElementById('outFormat').value;
+        ext = mimeOut.split('/')[1].replace('jpeg','jpg');
+        quality = 0.92;
+        canvas.width = w; canvas.height = h;
+        if (mimeOut === 'image/jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0,0,w,h); }
+        ctx.drawImage(img, 0, 0);
+
+      } else if (currentTool === 'resize') {
+        w = parseInt(document.getElementById('rw').value) || w;
+        h = parseInt(document.getElementById('rh').value) || h;
+        canvas.width = w; canvas.height = h;
+        ctx.drawImage(img, 0, 0, w, h);
+        mimeOut = 'image/jpeg'; ext = 'jpg'; quality = 0.92;
+
+      } else if (currentTool === 'crop') {
+        const ratio = document.getElementById('cropRatio').value;
+        let tw = w, th = h;
+        if (ratio !== 'free') {
+          const [rw2, rh2] = ratio.split(':').map(Number);
+          const r = rw2 / rh2;
+          if (w / h > r) { tw = Math.round(h * r); }
+          else { th = Math.round(w / r); }
+        }
+        canvas.width = tw; canvas.height = th;
+        const ox = Math.round((w - tw)/2), oy = Math.round((h - th)/2);
+        ctx.drawImage(img, ox, oy, tw, th, 0, 0, tw, th);
+        mimeOut = 'image/jpeg'; ext = 'jpg'; quality = 0.92;
+
+      } else if (currentTool === 'grayscale') {
+        const intensity = (document.getElementById('gsIntensity')?.value || 100) / 100;
+        canvas.width = w; canvas.height = h;
+        ctx.drawImage(img, 0, 0);
+        const d = ctx.getImageData(0, 0, w, h);
+        for (let i = 0; i < d.data.length; i += 4) {
+          const gray = 0.299*d.data[i] + 0.587*d.data[i+1] + 0.114*d.data[i+2];
+          d.data[i]   = d.data[i]   + (gray - d.data[i])   * intensity;
+          d.data[i+1] = d.data[i+1] + (gray - d.data[i+1]) * intensity;
+          d.data[i+2] = d.data[i+2] + (gray - d.data[i+2]) * intensity;
+        }
+        ctx.putImageData(d, 0, 0);
+        mimeOut = 'image/png'; ext = 'png'; quality = 1;
+
+      } else if (currentTool === 'rotate') {
+        const angle = parseInt(document.getElementById('rotAngle')?.value || 90);
+        const rad = angle * Math.PI / 180;
+        const sin = Math.abs(Math.sin(rad)), cos = Math.abs(Math.cos(rad));
+        canvas.width  = Math.round(w*cos + h*sin);
+        canvas.height = Math.round(w*sin + h*cos);
+        ctx.translate(canvas.width/2, canvas.height/2);
+        ctx.rotate(rad);
+        ctx.drawImage(img, -w/2, -h/2);
+        mimeOut = 'image/jpeg'; ext = 'jpg'; quality = 0.92;
+      }
+
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const newSize = blob.size;
+        const saving = Math.round((1 - newSize/originalSize)*100);
+        const link = document.getElementById('downloadLink');
+        link.href = url;
+        link.download = `pixelcraft_${currentTool}_${Date.now()}.${ext}`;
+        const ri = document.getElementById('resultInfo');
+        const sb = document.getElementById('savingsBadge');
+        const l = T[lang];
+        ri.textContent = `${l.original}: ${fmtSize(originalSize)} → ${l.result}: ${fmtSize(newSize)}`;
+        if (saving > 0) {
+          sb.textContent = `✅ ${l.saved}: ${saving}%`;
+          sb.style.color = 'var(--accent3)';
+        } else {
+          sb.textContent = `ℹ️ ${fmtSize(newSize)}`;
+          sb.style.color = 'var(--text-muted)';
+        }
+        document.getElementById('resultBox').classList.add('show');
+        hideProgress();
+        showToast('✅ ' + l.done, 'success');
+
+        // update preview with result
+        const reader2 = new FileReader();
+        reader2.onload = e2 => {
+          document.getElementById('previewBox').innerHTML = `<img src="${e2.target.result}" alt="result">`;
+        };
+        reader2.readAsDataURL(blob);
+      }, mimeOut, quality);
+    } catch(e) {
+      hideProgress();
+      showToast('❌ Erreur: ' + e.message, 'error');
+    }
+  }, 300);
+}
+
+function fmtSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/1048576).toFixed(2) + ' MB';
+}
+
+function showProgress() {
+  const pw = document.getElementById('progressWrap');
+  const pb = document.getElementById('progressBar');
+  pw.style.display = 'block'; pb.style.width = '0';
+  let p = 0;
+  const iv = setInterval(() => {
+    p += Math.random()*30; if(p>90) p=90;
+    pb.style.width = p+'%';
+  }, 100);
+  pw._iv = iv;
+}
+function hideProgress() {
+  const pw = document.getElementById('progressWrap');
+  const pb = document.getElementById('progressBar');
+  clearInterval(pw._iv);
+  pb.style.width = '100%';
+  setTimeout(() => { pw.style.display = 'none'; pb.style.width = '0'; }, 500);
+}
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
